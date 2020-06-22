@@ -1,0 +1,43 @@
+<Project InitialTargets="GenerateTargetsFile;GatherPackagedDependencies">
+
+    <PropertyGroup>
+        <ProjectRoot Condition=" '$(ProjectRoot)' == '' ">$(MSBuildThisFileDirectory)</ProjectRoot>
+        <AssemblyPath>$(ProjectRoot)bin</AssemblyPath>
+        <AssemblyPath>$(AssemblyPath)$([System.IO.Path]::DirectorySeparatorChar)$(Configuration)</AssemblyPath>
+        <AssemblyPath>$(AssemblyPath)$([System.IO.Path]::DirectorySeparatorChar)$(TargetFramework)</AssemblyPath>
+        <AssemblyPath>$(AssemblyPath)$([System.IO.Path]::DirectorySeparatorChar)NETMetaCoder.MSBuild.dll</AssemblyPath>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetsFilePath>$(ProjectRoot)$([System.IO.Path]::DirectorySeparatorChar)NETMetaCoder.MSBuild-template.targets</TargetsFilePath>
+    </PropertyGroup>
+
+    <UsingTask TaskName="NETMetaCoder.MSBuild.GenerateTargetsFile" AssemblyFile="$(AssemblyPath)"/>
+
+    <Target Name="GenerateTargetsFile">
+        <GenerateTargetsFile
+                TargetsFilePath="$(TargetsFilePath)"
+                PackageId="$(PackageId)"
+                Version="$(Version)"
+                TargetFrameworkMoniker="$(TargetFramework)"/>
+    </Target>
+
+    <UsingTask TaskName="NETMetaCoder.MSBuild.GatherPackagedDependencies" AssemblyFile="$(AssemblyPath)"/>
+    <UsingTask TaskName="NETMetaCoder.MSBuild.CopyAssemblyFiles" AssemblyFile="$(AssemblyPath)"/>
+
+    <Target Name="GatherPackagedDependencies">
+        <RemoveDir Directories="$(PackagedDependenciesPath)"/>
+
+        <MakeDir Directories="$(PackagedDependenciesPath)"/>
+
+        <Message Importance="high" Text="Gathering packaged dependencies into $(PackagedDependenciesPath)."/>
+
+        <GatherPackagedDependencies ReferencedDlls="$(ReferencedDlls)">
+            <Output TaskParameter="DllsToPackage" ItemName="DllsToPackage"/>
+        </GatherPackagedDependencies>
+
+        <!--<Copy SourceFiles="@(DllsToPackage)" DestinationFolder="$(PackagedDependenciesPath)"/>-->
+        <CopyAssemblyFiles AssemblyFilePaths="@(DllsToPackage)" DestinationDirectory="$(PackagedDependenciesPath)"/>
+    </Target>
+
+</Project>

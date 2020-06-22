@@ -1,0 +1,511 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NETMetaCoder.Abstractions</name>
+    </assembly>
+    <members>
+        <member name="T:NETMetaCoder.Abstractions.AttributeDescriptor">
+             <summary>
+             This type describes an attribute which is expected to be applied on a method declaration.
+            
+             It describes how the method is to be wrapped by the <c>NETMetaCoder</c> library.
+             </summary>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.AttributeDescriptor.#ctor(System.String,System.Int32,System.String)">
+            <summary>
+            Constructs a new <see cref="T:NETMetaCoder.Abstractions.AttributeDescriptor"/> instance.
+            </summary>
+            <param name="name"></param>
+            <param name="order"></param>
+            <param name="wrapperType"></param>
+        </member>
+        <member name="P:NETMetaCoder.Abstractions.AttributeDescriptor.Name">
+            <summary>
+            The name of the attribute to target.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.Abstractions.AttributeDescriptor.Order">
+            <summary>
+            The order with which to apply the syntax rewriting rules which accompany this
+            <see cref="T:NETMetaCoder.Abstractions.AttributeDescriptor"/>.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.Abstractions.AttributeDescriptor.WrapperType">
+            <summary>
+            The name of a wrapper type as defined in the <c>NETMetaCoder.SyntaxWrappers</c> namespace.
+            </summary>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.AttributeDescriptor.Equals(NETMetaCoder.Abstractions.AttributeDescriptor)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.AttributeDescriptor.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.AttributeDescriptor.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="T:NETMetaCoder.Abstractions.Constants">
+            <summary>
+            Constants to be used by the <c>NETMetaCoder</c> library.
+            </summary>
+        </member>
+        <member name="F:NETMetaCoder.Abstractions.Constants.AttributeSuffix">
+            <summary>
+            The suffix for any part of a rewritten syntax, where there's a need to reference an attribute's name.
+            </summary>
+        </member>
+        <member name="T:NETMetaCoder.Abstractions.GenericPlaceholder`1">
+            <summary>
+            A placeholder type to be used in the rewritten syntax, when a generic parameter is used in the original code but
+            is not available in the rewritten code.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <remarks>
+            It is expected to be used only as <c>GenericPlaceholder&lt;&gt;</c>.
+            </remarks>
+        </member>
+        <member name="T:NETMetaCoder.Abstractions.InterceptionResult">
+            <summary>
+            The result returned by <see cref="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept(System.Object[])"/>.
+            </summary>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.InterceptionResult.#ctor">
+            <summary>
+            Constructs a new <see cref="T:NETMetaCoder.Abstractions.InterceptionResult"/> instance.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.Abstractions.InterceptionResult.IsIntercepted">
+            <summary>
+            True whenever a call to a method is intercepted, as decided by the implementation of the
+            <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/>.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.Abstractions.InterceptionResult.Context">
+            <summary>
+            An object to be provided and interpreted by the implementation of the <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/>.
+            </summary>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.InterceptionResult.NotIntercepted(System.Object)">
+            <summary>
+            A helper method that returns an <see cref="T:NETMetaCoder.Abstractions.InterceptionResult"/> and is meant to be used when no
+            interception is desired.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.InterceptionResult.Intercepted(System.Object)">
+            <summary>
+            A helper method that returns an <see cref="T:NETMetaCoder.Abstractions.InterceptionResult"/> and is meant to be used when interception
+            is desired.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:NETMetaCoder.Abstractions.InterceptionResult`1">
+            <summary>
+            The result returned by the generic <c>Intercept</c> methods in <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/>.
+            </summary>
+            <typeparam name="TValue">
+            The type of <see cref="P:NETMetaCoder.Abstractions.InterceptionResult`1.Value"/> which is returned instead of the original method result, in case that
+            interception is desired by the implementation of <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/>.
+            has occurred.
+            </typeparam>
+        </member>
+        <member name="P:NETMetaCoder.Abstractions.InterceptionResult`1.Value">
+            <summary>
+            The value to use
+            </summary>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.InterceptionResult`1.NotIntercepted(System.Object)">
+            <summary>
+            A helper method that returns an <see cref="T:NETMetaCoder.Abstractions.InterceptionResult`1"/> and is meant to be used when no
+            interception is desired.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.InterceptionResult`1.Intercepted(`0,System.Object)">
+            <summary>
+            A helper method that returns an <see cref="T:NETMetaCoder.Abstractions.InterceptionResult`1"/> and is meant to be used when
+            interception is desired.
+            </summary>
+            <param name="value"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.InterceptionResult`1.From(NETMetaCoder.Abstractions.InterceptionResult)">
+            <summary>
+            A converter function to turn an <see cref="T:NETMetaCoder.Abstractions.InterceptionResult"/> into an
+            <see cref="T:NETMetaCoder.Abstractions.InterceptionResult`1"/>, using a default value for <see cref="P:NETMetaCoder.Abstractions.InterceptionResult`1.Value"/>.
+            </summary>
+            <param name="interceptionResult"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.InterceptionResult`1.From``1(NETMetaCoder.Abstractions.InterceptionResult{``0})">
+            <summary>
+            A converter function to turn an <see cref="T:NETMetaCoder.Abstractions.InterceptionResult"/> into an
+            <see cref="T:NETMetaCoder.Abstractions.InterceptionResult`1"/>.
+            </summary>
+            <param name="interceptionResult"></param>
+            <typeparam name="TOtherValue"></typeparam>
+        </member>
+        <member name="T:NETMetaCoder.Abstractions.MethodObsoletion">
+            <summary>
+            The flavor of the <see cref="T:System.ObsoleteAttribute"/> found in a method declaration, if any.
+            </summary>
+        </member>
+        <member name="F:NETMetaCoder.Abstractions.MethodObsoletion.NoObsoletion">
+            <summary>
+            No <see cref="T:System.ObsoleteAttribute"/> found.
+            </summary>
+        </member>
+        <member name="F:NETMetaCoder.Abstractions.MethodObsoletion.ObsoleteWithWarning">
+            <summary>
+            An <see cref="T:System.ObsoleteAttribute"/> attribute was found and it has been set to emit a warning.
+            </summary>
+        </member>
+        <member name="F:NETMetaCoder.Abstractions.MethodObsoletion.ObsoleteWithError">
+            <summary>
+            An <see cref="T:System.ObsoleteAttribute"/> attribute was found and it has been set to emit an error.
+            </summary>
+        </member>
+        <member name="T:NETMetaCoder.Abstractions.MethodSyntaxGenerator">
+            <summary>
+            A function that generates the code that wraps a method call.
+            </summary>
+            <param name="attributeName">
+            The attribute name which caused the method call to be wrapped.
+            </param>
+            <param name="syntax">
+            The method declaration syntax which defines the method to be wrapped.
+            </param>
+            <param name="newMethodName">
+            The new method name that the wrapped method will have, after it has been wrapped by the generated method body.
+            </param>
+        </member>
+        <member name="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute">
+             <summary>
+             The main entry point into the functionality provided by the <c>NETMetaCoder</c> library.
+            
+             This type is to be used as the base class for all attribute implementations that wrap methods.
+             </summary>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Init(System.Boolean,System.Type,System.Type,System.String,System.Type[])">
+             <summary>
+             This method is called when the methods attribute is first read and cached, during runtime.
+            
+             It is meant to initialize the attribute's state.
+             </summary>
+             <param name="isAsync">
+             True if the method that is being wrapped returns a <see cref="T:System.Threading.Tasks.Task"/> or <see cref="T:System.Threading.Tasks.Task`1"/>.
+             </param>
+             <param name="containerType">
+             The type of the class or struct that contains the method.
+             </param>
+             <param name="returnType">
+             The type of the method that is being wrapped.
+             </param>
+             <param name="methodName">
+             The name of the method that is being wrapped.
+             </param>
+             <param name="parameterTypes">
+             The types of the parameters of the method that is being wrapped.
+             </param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept(System.Object[])">
+             <summary>
+             This method is called for synchronous wrapped methods that do not return a value.
+            
+             The <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation is expected to decide whether to intercept the call
+             to the wrapped method.
+             </summary>
+             <param name="arguments">
+             The arguments that were passed to the currently processed invocation of the wrapped method.
+             </param>
+             <returns>
+             Returns an <see cref="T:NETMetaCoder.Abstractions.InterceptionResult"/> that represents whether or not the call to the original method
+             has been intercepted.
+             </returns>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept``1(System.Object[],``0@)">
+             <summary>
+             This method is called for synchronous wrapped methods that return a value.
+            
+             The <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation is expected to decide whether to intercept the call
+             to the wrapped method.
+             </summary>
+             <param name="arguments">
+             The arguments that were passed to the currently processed invocation of the wrapped method.
+             </param>
+             <param name="value">
+             The reference to the value that is to be returned by the wrapped method invocation.
+            
+             This value may have already been changed by another <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation, by
+             the time that this method gets called.
+             </param>
+             <returns>
+             Returns an <see cref="T:NETMetaCoder.Abstractions.InterceptionResult`1"/> that represents whether or not the call to the original
+             method has been intercepted and if it has, the value which should replace <paramref name="value"/>.
+             </returns>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept``1(System.Object[],System.Threading.Tasks.Task{``0}@)">
+             <summary>
+             This method is called for asynchronous wrapped methods that return a value, through a <see cref="T:System.Threading.Tasks.Task"/>.
+            
+             The <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation is expected to decide whether to intercept the call
+             to the wrapped method.
+             </summary>
+             <param name="arguments">
+             The arguments that were passed to the currently processed invocation of the wrapped method.
+             </param>
+             <param name="value">
+             The reference to the value that is to be returned by the wrapped method invocation.
+            
+             This value may have already been changed by another <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation, by
+             the time that this method gets called.
+             </param>
+             <returns>
+             Returns an <see cref="T:NETMetaCoder.Abstractions.InterceptionResult`1"/> that represents whether or not the call to the original
+             method has been intercepted and if it has, the value which should replace <paramref name="value"/>.
+             </returns>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.HandleInterceptionResult(NETMetaCoder.Abstractions.InterceptionResult@)">
+             <summary>
+             This method is called to handle the <see cref="T:NETMetaCoder.Abstractions.InterceptionResult"/> returned by <see cref="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept(System.Object[])"/>.
+            
+             This method will be unconditionally called either when the call to the original method is intercepted, or
+             not.
+             </summary>
+             <param name="interceptionResult"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.HandleInterceptionResult``1(``0@,NETMetaCoder.Abstractions.InterceptionResult{``0}@)">
+             <summary>
+             This method is called to handle the <see cref="T:NETMetaCoder.Abstractions.InterceptionResult`1"/> returned by
+             <c>Intercept&lt;T&gt;</c>.
+            
+             This method will be unconditionally called either when the call to the original method is intercepted, or
+             not.
+             </summary>
+             <param name="value">
+             The reference to the value that is to be returned by the wrapped method invocation.
+            
+             This value may have already been changed by another <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation, by
+             the time that this method gets called, even by the call to <c>Intercept&lt;T&gt;</c>.
+             </param>
+             <param name="interceptionResult"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.HandleInterceptionResult``1(System.Threading.Tasks.Task{``0}@,NETMetaCoder.Abstractions.InterceptionResult{System.Threading.Tasks.Task{``0}}@)">
+             <summary>
+             This method is called to handle the <see cref="T:NETMetaCoder.Abstractions.InterceptionResult`1"/> returned by
+             <c>Intercept&lt;Task&lt;T&gt;&gt;</c>.
+            
+             This method will be unconditionally called either when the call to the original method is intercepted, or
+             not.
+             </summary>
+             <param name="value">
+             The reference to the value that is to be returned by the wrapped method invocation.
+            
+             This value may have already been changed by another <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation, by
+             the time that this method gets called, even by the call to <c>Intercept&lt;Task&lt;T&gt;&gt;</c>.
+             </param>
+             <param name="interceptionResult"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.HandleException(System.Exception,NETMetaCoder.Abstractions.InterceptionResult@)">
+             <summary>
+             This method is called to handle any exception thrown by the wrapped call to original method, when that
+             method is synchronous and does not return a value.
+            
+             The <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation can choose to handle the exception through this
+             method.
+             </summary>
+             <param name="exception"></param>
+             <param name="interceptionResult"></param>
+             <returns>
+             True if the exception is handled.
+            
+             Otherwise, the exception is rethrown.
+             </returns>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.HandleException``1(System.Exception,``0@,NETMetaCoder.Abstractions.InterceptionResult{``0}@)">
+             <summary>
+             This method is called to handle any exception thrown by the wrapped call to original method, when that
+             method is synchronous and returns a value.
+            
+             The <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation can choose to handle the exception through this
+             method.
+             </summary>
+             <param name="exception"></param>
+             <param name="value">
+             The reference to the value that is to be returned by the wrapped method invocation.
+            
+             This value may have already been changed by another <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation, by
+             the time that this method gets called, even by the call to <c>Intercept&lt;T&gt;</c>.
+             </param>
+             <param name="interceptionResult"></param>
+             <returns>
+             True if the exception is handled.
+            
+             Otherwise, the exception is rethrown.
+             </returns>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.HandleException``1(System.Exception,System.Threading.Tasks.Task{``0}@,NETMetaCoder.Abstractions.InterceptionResult{System.Threading.Tasks.Task{``0}}@)">
+             <summary>
+             This method is called to handle any exception thrown by the wrapped call to original method, when that
+             method is synchronous and returns a value.
+            
+             The <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation can choose to handle the exception through this
+             method.
+             </summary>
+             <param name="exception"></param>
+             <param name="value">
+             The reference to the value that is to be returned by the wrapped method invocation.
+            
+             This value may have already been changed by another <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation, by
+             the time that this method gets called, even by the call to <c>Intercept&lt;Task&lt;T&gt;&gt;</c>.
+             </param>
+             <param name="interceptionResult"></param>
+             <returns>
+             True if the exception is handled.
+            
+             Otherwise, the exception is rethrown.
+             </returns>
+        </member>
+        <member name="T:NETMetaCoder.Abstractions.NETMetaCoderException">
+            <summary>
+            An exception meant to be thrown for errors that occur while <c>NETMetaCoder</c> processes a compilation unit.
+            </summary>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderException.#ctor(System.String)">
+            <summary>
+            Constructs a new <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderException"/> instance.
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="T:NETMetaCoder.Abstractions.PropertySyntaxGenerator">
+             <summary>
+             A function that generates syntax for declaring a property.
+            
+             That property lazily returns the instance of an attribute, for which a method has been wrapped.
+            
+             The returned attribute instance is used by the generated code to access its <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/>
+             implementation.
+             </summary>
+             <param name="attributeName"></param>
+             <param name="containerTypeSyntax"></param>
+             <param name="syntax"></param>
+             <param name="newMethodName"></param>
+        </member>
+        <member name="T:NETMetaCoder.Abstractions.SyntaxExtensions">
+            <summary>
+            Extension methods for manipulating syntax nodes.
+            </summary>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.WithLeadingSpace(Microsoft.CodeAnalysis.SyntaxToken)">
+            <summary>
+            Adds a leading space to a <see cref="T:Microsoft.CodeAnalysis.SyntaxToken"/>.
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.WithLeadingSpace``1(``0)">
+            <summary>
+            Adds a leading space syntax node.
+            </summary>
+            <param name="node"></param>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.WithTrailingLineFeed``1(``0)">
+            <summary>
+            Adds a trailing new line syntax node.
+            </summary>
+            <param name="node"></param>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.WithSurroundingLineFeed``1(``0)">
+            <summary>
+            Adds a leading and a trailing new line syntax nodes.
+            </summary>
+            <param name="node"></param>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.WithPartialKeywordPrefix(Microsoft.CodeAnalysis.CSharp.Syntax.ClassDeclarationSyntax)">
+            <summary>
+            Adds a <c>partial</c> modifier to a <see cref="T:Microsoft.CodeAnalysis.CSharp.Syntax.ClassDeclarationSyntax"/>.
+            </summary>
+            <param name="syntax"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.WithPartialKeywordPrefix(Microsoft.CodeAnalysis.CSharp.Syntax.StructDeclarationSyntax)">
+            <summary>
+            Adds a <c>partial</c> modifier to a <see cref="T:Microsoft.CodeAnalysis.CSharp.Syntax.StructDeclarationSyntax"/>.
+            </summary>
+            <param name="syntax"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.HasAsyncModifier(Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax)">
+            <summary>
+            Returns true is the <see cref="T:Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax"/> contains the <c>async</c> modifier.
+            </summary>
+            <param name="syntax"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.IsAsync(Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax)">
+            <summary>
+            Returns true if the <see cref="T:Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax"/> defines that the method returns a
+            <see cref="T:System.Threading.Tasks.Task"/> or a <see cref="T:System.Threading.Tasks.Task`1"/>.
+            </summary>
+            <param name="syntax"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.GetGenericTypeParameters(Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax)">
+            <summary>
+            Extracts the names of the generic parameters of a <see cref="T:Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax"/>.
+            </summary>
+            <param name="syntax"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.IsGenericWithGenericTypeParameter(Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax,System.Collections.Immutable.IImmutableSet{System.String})">
+            <summary>
+            Returns true if the <see cref="T:Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax"/> represents a generic type.
+            </summary>
+            <param name="syntax"></param>
+            <param name="methodGenericParameters"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.RemoveTypeArguments(Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax)">
+             <summary>
+             Removes the type parameters from a type, if any.
+            
+             Ie, it turns <c>A&lt;T&gt;</c> into <c>A&lt;&gt;</c>.
+             </summary>
+             <param name="syntax"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.ReturnsValue(Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax,System.Boolean@,System.String@)">
+            <summary>
+            Returns true if the <see cref="T:Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax"/> represents a method that returns a value.
+            </summary>
+            <param name="syntax"></param>
+            <param name="isVoid"></param>
+            <param name="asyncTaskTypeArgument"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.IsMethodObsoletionAttribute(Microsoft.CodeAnalysis.CSharp.Syntax.AttributeSyntax)">
+            <summary>
+            Returns true if the <see cref="T:Microsoft.CodeAnalysis.CSharp.Syntax.AttributeSyntax"/> represents a <see cref="T:System.ObsoleteAttribute"/>.
+            </summary>
+            <param name="syntax"></param>
+        </member>
+        <member name="M:NETMetaCoder.Abstractions.SyntaxExtensions.FindAttributes(Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax,System.Collections.Generic.IEnumerable{System.String},System.Action{Microsoft.CodeAnalysis.CSharp.Syntax.AttributeSyntax,System.String},System.Action{Microsoft.CodeAnalysis.CSharp.Syntax.AttributeSyntax})">
+            <summary>
+            Extracts attribute names from a <see cref="T:Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax"/>, based on the provided criteria.
+            </summary>
+            <param name="syntax"></param>
+            <param name="referenceAttributeNames"></param>
+            <param name="matchingAttributeCallback"></param>
+            <param name="attributeCallback"></param>
+        </member>
+        <member name="T:NETMetaCoder.Abstractions.SyntaxWrapper">
+            <summary>
+            This type represents a wrapper around a method call.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.Abstractions.SyntaxWrapper.PreMapper">
+            <summary>
+            The output of this syntax generator is placed before a wrapped method call.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.Abstractions.SyntaxWrapper.PostMapper">
+            <summary>
+            The output of this syntax generator is placed after a wrapped method call.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <NoWarn>NU5105</NoWarn>
+        <DocumentationFile>../doc/NETMetaCoder.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>NETMetaCoder</PackageId>
+        <Version>0.1.0-alpha.1</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.6.0-4.final" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NETMetaCoder.Abstractions\NETMetaCoder.Abstractions.csproj" />
+    </ItemGroup>
+
+</Project>

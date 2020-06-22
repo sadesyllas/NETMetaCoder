@@ -1,0 +1,51 @@
+<Project>
+    <PropertyGroup>
+        <!--        <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>-->
+        <OutputDirectoryName>NETMetaCoderRewrittenCodeSyntax</OutputDirectoryName>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <RewrittenCodeSyntaxPath>$(MSBuildProjectDirectory)$([System.IO.Path]::DirectorySeparatorChar)obj</RewrittenCodeSyntaxPath>
+        <RewrittenCodeSyntaxPath>$(RewrittenCodeSyntaxPath)$([System.IO.Path]::DirectorySeparatorChar)$(OutputDirectoryName)</RewrittenCodeSyntaxPath>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PathMap>$(RewrittenCodeSyntaxPath)=$(MSBuildProjectDirectory)</PathMap>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="$(RewrittenCodeSyntaxPath)$([System.IO.Path]::DirectorySeparatorChar)**"/>
+    </ItemGroup>
+
+    <!--    <UsingTask TaskName="NETMetaCoder.MSBuild.RewriteProjectSyntax" AssemblyFile="$(NuGetPackageRoot)\${PACKAGE_ID}\${VERSION}\lib\${TARGET_FRAMEWORK_MONIKER}\NETMetaCoder.MSBuild.dll"/>-->
+    <UsingTask TaskName="NETMetaCoder.MSBuild.RewriteProjectSyntax" AssemblyFile="..\lib\${TARGET_FRAMEWORK_MONIKER}\NETMetaCoder.MSBuild.dll"/>
+
+    <Target Name="RewriteProjectSyntax" AfterTargets="Restore" BeforeTargets="BeforeBuild" Condition=" '$(DisableNETMetaCoder)' != 'true' ">
+        <Message Text="[NETMetaCoder] Rewritting the code syntax in $(MSBuildProjectName)." Importance="high"/>
+
+        <RewriteProjectSyntax
+                ProjectRootDirectory="$(MSBuildProjectDirectory)"
+                CompilationUnits="@(Compile)"
+                OutputDirectoryName="$(OutputDirectoryName)"
+                LogLevel="$(NETMetaCoderLogLevel)">
+            <Output TaskParameter="NewCompilationUnits" ItemName="NewCompilationUnits"/>
+        </RewriteProjectSyntax>
+
+        <ItemGroup>
+            <Compile Remove="**"/>
+            <Compile Include="@(NewCompilationUnits)"/>
+        </ItemGroup>
+    </Target>
+
+    <Target
+            Name="RemoveNETMetaCoderOutput"
+            AfterTargets="AfterBuild"
+            Condition=" '$(DisableNETMetaCoder)' != 'true' And '$(KeepNETMetaCoderOutput)' != 'true' ">
+        <RemoveDir Directories="$(RewrittenCodeSyntaxPath)"/>
+    </Target>
+
+    <Target Name="CleanNETMetaCoderOutput" BeforeTargets="Clean">
+        <RemoveDir Directories="$(RewrittenCodeSyntaxPath)"/>
+    </Target>
+
+</Project>

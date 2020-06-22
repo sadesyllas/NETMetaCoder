@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NETMetaCoder.SyntaxWrappers</name>
+    </assembly>
+    <members>
+        <member name="T:NETMetaCoder.SyntaxWrappers.CommonWrapper">
+             <summary>
+             A wrapper type that defines a fixed way to wrap method calls.
+            
+             The generated code is of the following format:
+            
+             <code>
+             var attributeInstance = PropertyName.Value;
+             var interceptionResult = attributeInstance.Intercept(new object[] {arg1, arg2, ...}[, ref result]);
+             if (!interceptionResult.IsIntercepted)
+             {
+                 try
+                 {
+                     // call to wrapped method or inner block of previously wrapped method call
+                 }
+                 catch (Exception exception)
+                 {
+                     if (!attributeInstance.HandleException(exception, [ref result, ]ref interceptionResult))
+                     {
+                         throw;
+                     }
+                 }
+             }
+             attributeInstance.HandleInterceptionResult([ref result, ]ref interceptionResult);
+             </code>
+            
+             The optional <c>ref result</c> is passed to the above calls only when the wrapped method returns a value.
+             </summary>
+        </member>
+        <member name="P:NETMetaCoder.SyntaxWrappers.CommonWrapper.Usings">
+            <summary>
+            The using declarations that are required by the produced code.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.SyntaxWrappers.CommonWrapper.SyntaxWrappers">
+            <summary>
+            The syntax generator functions that produce the syntax that wraps a method call.
+            </summary>
+        </member>
+        <member name="T:NETMetaCoder.SyntaxWrappers.MustReturnValueWrapper">
+            <summary>
+            A wrapper type that checks that the method being wrapped returns a value.
+            </summary>
+            <remarks>
+            It is meant to be used with <see cref="T:NETMetaCoder.SyntaxWrappers.CommonWrapper"/>.
+            </remarks>
+            <seealso cref="T:NETMetaCoder.SyntaxWrappers.CommonWrapper"/>
+            <seealso cref="T:NETMetaCoder.SyntaxWrappers.WithoutGenericParametersWrapper"/>
+        </member>
+        <member name="P:NETMetaCoder.SyntaxWrappers.MustReturnValueWrapper.SyntaxWrappers">
+            <inheritdoc cref="P:NETMetaCoder.SyntaxWrappers.CommonWrapper.SyntaxWrappers"/>
+        </member>
+        <member name="T:NETMetaCoder.SyntaxWrappers.SyntaxWrappersIndex">
+            <summary>
+            An index of wrapper types, keyed by their names.
+            </summary>
+        </member>
+        <member name="F:NETMetaCoder.SyntaxWrappers.SyntaxWrappersIndex.WrapperTypes">
+            <inheritdoc cref="T:NETMetaCoder.SyntaxWrappers.SyntaxWrappersIndex"/>
+        </member>
+        <member name="T:NETMetaCoder.SyntaxWrappers.WithoutGenericParametersWrapper">
+            <summary>
+            A wrapper type that checks that the method being wrapped does not depend on generic parameters.
+            </summary>
+            <remarks>
+            It is meant to be used with <see cref="T:NETMetaCoder.SyntaxWrappers.CommonWrapper"/>.
+            </remarks>
+            <seealso cref="T:NETMetaCoder.SyntaxWrappers.CommonWrapper"/>
+            <seealso cref="T:NETMetaCoder.SyntaxWrappers.MustReturnValueWrapper"/>
+        </member>
+        <member name="P:NETMetaCoder.SyntaxWrappers.WithoutGenericParametersWrapper.SyntaxWrappers">
+            <inheritdoc cref="P:NETMetaCoder.SyntaxWrappers.CommonWrapper.SyntaxWrappers"/>
+        </member>
+    </members>
+</doc>

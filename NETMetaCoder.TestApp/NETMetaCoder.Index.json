@@ -1,0 +1,14 @@
+{
+  "attributes": [
+    {
+      "name": "Cache",
+      "order": 1,
+      "wrapper": "WithoutGenericParametersWrapper"
+    },
+    {
+      "name": "Logger",
+      "order": 2,
+      "wrapper": "CommonWrapper"
+    }
+  ]
+}

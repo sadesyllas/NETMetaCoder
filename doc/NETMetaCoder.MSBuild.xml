@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NETMetaCoder.MSBuild</name>
+    </assembly>
+    <members>
+        <member name="T:NETMetaCoder.MSBuild.AttributesIndex">
+             <summary>
+             A type that represents the expected JSON format in an attributes index file.
+            
+             The attributes index file maps attribute names to wrapper types, along with metadata.
+            
+             These attribute names must match the attribute names used on methods which are expected to be wrapped by
+             <c>NETMetaCoder</c>'s generated code.
+             </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.AttributesIndex.Attributes">
+            <summary>
+            The collection of <see cref="T:NETMetaCoder.MSBuild.AttributesIndex.Attribute"/> as expected to be found in the attributes index file.
+            </summary>
+        </member>
+        <member name="T:NETMetaCoder.MSBuild.AttributesIndex.Attribute">
+            <summary>
+            The type representing a single attribute description, as expected to be found in the attributes index file.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.AttributesIndex.Attribute.Name">
+            <summary>
+            The attribute name, as it is expected to match in the code that is being rewritten.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.AttributesIndex.Attribute.Order">
+             <summary>
+             The order with which to wrap the code, as defined by this attribute's <see cref="P:NETMetaCoder.MSBuild.AttributesIndex.Attribute.Wrapper"/>.
+            
+             This has an effect only when target multiple attributes the generate wrapper code.
+             </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.AttributesIndex.Attribute.Wrapper">
+            <summary>
+            The name of the wrapper code which defines how the wrapper syntax will be generated for this attribute.
+            </summary>
+        </member>
+        <member name="T:NETMetaCoder.MSBuild.AttributesIndexReader">
+            <summary>
+            A helper class that finds and reads the attributes index file.
+            </summary>
+        </member>
+        <member name="M:NETMetaCoder.MSBuild.AttributesIndexReader.Read(System.String)">
+            <summary>
+            Reads the attributes index file.
+            </summary>
+            <param name="directoryToSearchIn"></param>
+            <returns></returns>
+            <exception cref="T:NETMetaCoder.Abstractions.NETMetaCoderException"></exception>
+        </member>
+        <member name="T:NETMetaCoder.MSBuild.CopyAssemblyFiles">
+            <summary>
+            An MSBuild task that copies assembly files to a given destination, to help with bundling this library's
+            resources.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.CopyAssemblyFiles.AssemblyFilePaths">
+            <summary>
+            The assembly files to copy.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.CopyAssemblyFiles.DestinationDirectory">
+            <summary>
+            The destination directory where the assembly files are to be copied.
+            </summary>
+        </member>
+        <member name="M:NETMetaCoder.MSBuild.CopyAssemblyFiles.Execute">
+            <inheritdoc cref="M:Microsoft.Build.Utilities.Task.Execute"/>
+        </member>
+        <member name="T:NETMetaCoder.MSBuild.GatherPackagedDependencies">
+            <summary>
+            An MSBuild task that gathers dependencies that are necessary for bundling this library.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.GatherPackagedDependencies.ReferencedDlls">
+            <summary>
+            A <c>;</c> separated list of paths to DLLs that are referenced by this library.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.GatherPackagedDependencies.DllsToPackage">
+            <summary>
+            The DLLs to package as dependencies of this library.
+            </summary>
+        </member>
+        <member name="M:NETMetaCoder.MSBuild.GatherPackagedDependencies.Execute">
+            <inheritdoc cref="M:Microsoft.Build.Utilities.Task.Execute"/>
+        </member>
+        <member name="T:NETMetaCoder.MSBuild.GenerateTargetsFile">
+             <summary>
+             An MSBuild task that reads file <c>NETMetaCoder.MSBuild-template.targets</c> and produces file
+             <c>NETMetaCoder.MSBuild.targets</c>.
+            
+             The generated file is used by projects that depend on this library's NuGet package to load the necessary MSBuild
+             tasks.
+             </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.GenerateTargetsFile.TargetsFilePath">
+            <summary>
+            The file path to <c>NETMetaCoder.MSBuild-template.targets</c>.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.GenerateTargetsFile.PackageId">
+            <summary>
+            The name of this library's package.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.GenerateTargetsFile.Version">
+            <summary>
+            This library's package version.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.GenerateTargetsFile.TargetFrameworkMoniker">
+            <summary>
+            The target framework moniker of this library.
+            </summary>
+        </member>
+        <member name="M:NETMetaCoder.MSBuild.GenerateTargetsFile.Execute">
+            <inheritdoc cref="M:Microsoft.Build.Utilities.Task.Execute"/>
+        </member>
+        <member name="T:NETMetaCoder.MSBuild.LogLevel">
+            <summary>
+            The logging level to use when printing messages produced by this library.
+            </summary>
+        </member>
+        <member name="F:NETMetaCoder.MSBuild.LogLevel.Quiet">
+            <summary>
+            No informational logs are printed.
+            </summary>
+        </member>
+        <member name="F:NETMetaCoder.MSBuild.LogLevel.Normal">
+            <summary>
+            Only information in the form of a summary and once-off messages are logged.
+            </summary>
+        </member>
+        <member name="F:NETMetaCoder.MSBuild.LogLevel.Loud">
+            <summary>
+            Messages produced by looping over collections and detailed descriptions of this library's actions are
+            logged.
+            </summary>
+        </member>
+        <member name="T:NETMetaCoder.MSBuild.RewriteProjectSyntax">
+            <summary>
+            An MSBuild task that scans a project that depends on this library and rewrites the syntax where necessary.
+            </summary>
+            <seealso cref="T:NETMetaCoder.MSBuild.AttributesIndexReader"/>
+            <seealso cref="T:NETMetaCoder.CodeTransformer"/>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.RewriteProjectSyntax.ProjectRootDirectory">
+            <summary>
+            The path to the root directory of the project that this library is a dependency of.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.RewriteProjectSyntax.OutputDirectoryName">
+            <summary>
+            The path to the directory where the rewritten syntax will be stored.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.RewriteProjectSyntax.CompilationUnits">
+            <summary>
+            An array of paths to the code files that are to be compiled, before this library processes any files.
+            </summary>
+            <remarks>
+            This library works by redirecting MSBuild to compile processed files, instead of the original files in the
+            codebase.
+            </remarks>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.RewriteProjectSyntax.LogLevel">
+            <summary>
+            The logging level to apply when executing this MSBuild task.
+            </summary>
+            <seealso cref="T:NETMetaCoder.MSBuild.LogLevel"/>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.RewriteProjectSyntax.NewCompilationUnits">
+            <summary>
+            An array of paths to the code files that are to be compiled, after this library has processed a project's
+            files.
+            </summary>
+            <remarks>
+            This library works by redirecting MSBuild to compile processed files, instead of the original files in the
+            codebase.
+            </remarks>
+        </member>
+        <member name="M:NETMetaCoder.MSBuild.RewriteProjectSyntax.Execute">
+            <inheritdoc cref="M:Microsoft.Build.Utilities.Task.Execute"/>
+        </member>
+    </members>
+</doc>

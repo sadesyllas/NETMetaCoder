@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+<!--        <DisableNETMetaCoder>true</DisableNETMetaCoder>-->
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <NETMetaCoderLogLevel>2</NETMetaCoderLogLevel>
+        <KeepNETMetaCoderOutput>true</KeepNETMetaCoderOutput>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="NETMetaCoder.MSBuild" Version="0.1.0-alpha.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="NETMetaCoder.Index.json" />
+    </ItemGroup>
+
+<!--    <ItemGroup>-->
+<!--      <ProjectReference Include="..\NETMetaCoder.MSBuild\NETMetaCoder.MSBuild.csproj" />-->
+<!--    </ItemGroup>-->
+
+<!--    <ItemGroup>-->
+<!--        <Compile Remove="TestClass.cs" />-->
+<!--        <Compile Include="obj\NETMetaCoderRewrittenCodeSyntax\TestClass.cs"/>-->
+<!--        <Compile Include="obj\NETMetaCoderRewrittenCodeSyntax\TestClass.Companion.cs"/>-->
+<!--    </ItemGroup>-->
+
+</Project>

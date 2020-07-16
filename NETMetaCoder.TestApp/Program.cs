@@ -88,9 +88,17 @@ namespace NETMetaCoder.TestApp
                 Class1.Class1__Class1.Class1__Class1__Class3.StructInner<int>.StructInner__Method2<int, string, double>(
                     Task.FromResult("generics"), null, ref i);
 
+// #pragma warning disable 618
+//                 Console.WriteLine($"result = {Class1.StructOuter.StructOuter__Method4(5).GetAwaiter().GetResult()}");
+// #pragma warning restore 618
+
+                Task.Run(() =>
+                {
+                    Console.WriteLine(
 #pragma warning disable 618
-                Console.WriteLine($"result = {Class1.StructOuter.StructOuter__Method4().GetAwaiter().GetResult()}");
+                        $"result = {Class1.StructOuter.StructOuter__Method4(5).GetAwaiter().GetResult()}");
 #pragma warning restore 618
+                }).Wait();
 
                 // var z = new Namespace1.Namespace1__Class2();
                 // z.Namespace1__Class2__Method3(new Class1());

@@ -108,6 +108,7 @@ and the method that will be actually called by client code will have the
 following form:
 
 ```c#
+[NETMetaCoderMarker]
 [MethodImpl(MethodImplOptions.AggressiveInlining)]
 public Task<IEnumerable<List<int>>> Foo()
 {
@@ -134,6 +135,13 @@ public Task<IEnumerable<List<int>>> Foo()
     }
 }
 ```
+
+The `NETMetaCoderMarkerAttribute` attribute enables runtime access to a
+particular instance of a wrapper attribute.
+
+The number of `NETMetaCoderMarkerAttribute` attributes that are applied to a
+wrapped method is equal to the wrapper attributes that caused that method to be
+wrapped.
 
 #### Debugging
 

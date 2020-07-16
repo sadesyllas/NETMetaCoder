@@ -1,6 +1,6 @@
 using System;
 
-namespace NETMetaCoder
+namespace NETMetaCoder.TestApp
 {
     public sealed class FooAttribute : Attribute
     {

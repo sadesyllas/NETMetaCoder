@@ -37,17 +37,17 @@ namespace Namespace1
         }
     }
 
-    [NETMetaCoder.Foo]
+    [Foo]
     public class Namespace1__Class2 : TestBase, IFace
     {
         [NETMetaCoder.TestApp.Cache]
-        [NETMetaCoder.Foo]
+        [Foo]
         public char Namespace1__Class2__Method1()
         {
             return 'x';
         }
 
-        [NETMetaCoder.Foo]
+        [Foo]
         public int Namespace1__Class2__Method2(int i) => 5;
 
         // [Cache]
@@ -68,7 +68,7 @@ namespace Namespace1
         [Logger]
         public Task Namespace1__Class2__Method8() => Task.FromCanceled(CancellationToken.None);
 
-        [NETMetaCoder.Foo]
+        [Foo]
         [NETMetaCoder.TestApp.Cache]
         public bool Namespace1__Class2__Method3(Class1 leClass)
         {
@@ -257,7 +257,7 @@ public class Class1
 
                 [Logger]
                 // [Cache]
-                [Obsolete("StructOuter__Method4", false)]
+                [Obsolete("StructInner__Method3", false)]
                 public static IEnumerable<Z> StructInner__Method3<T, U, Z>(Task<U> x, Dictionary<T, U> y, ref int w,
                     out string z)
                 {
@@ -269,7 +269,7 @@ public class Class1
                 }
 
                 [Logger]
-                [Obsolete("StructOuter__Method4", true)]
+                [Obsolete("StructInner__Method4", true)]
                 public static Z StructInner__Method4<T, U, Z>(Task<U> x, Dictionary<T, U> y, T t)
                 {
                     return default;
@@ -297,9 +297,9 @@ public class Class1
         [Cache]
         [Logger]
         [Obsolete("StructOuter__Method4")]
-        public static async Task<int> StructOuter__Method4()
+        public static async Task<int> StructOuter__Method4(int x)
         {
-            return 5;
+            return x;
         }
     }
 }

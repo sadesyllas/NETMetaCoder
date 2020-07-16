@@ -12,21 +12,28 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="NETMetaCoder.MSBuild" Version="0.1.0-alpha.1" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Remove="NETMetaCoder.Index.json" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="NETMetaCoder.MSBuild" Version="0.1.0-alpha.6" />
+    </ItemGroup>
+
 <!--    <ItemGroup>-->
-<!--      <ProjectReference Include="..\NETMetaCoder.MSBuild\NETMetaCoder.MSBuild.csproj" />-->
+<!--        <ProjectReference Include="..\NETMetaCoder.Abstractions\NETMetaCoder.Abstractions.csproj" />-->
+<!--        <ProjectReference Include="..\NETMetaCoder.MSBuild\NETMetaCoder.MSBuild.csproj" />-->
+<!--        <ProjectReference Include="..\NETMetaCoder.SyntaxWrappers\NETMetaCoder.SyntaxWrappers.csproj" />-->
+<!--        <ProjectReference Include="..\NETMetaCoder\NETMetaCoder.csproj" />-->
+<!--    </ItemGroup>-->
+
+<!--    <ItemGroup>-->
+<!--        <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>-->
 <!--    </ItemGroup>-->
 
 <!--    <ItemGroup>-->
 <!--        <Compile Remove="TestClass.cs" />-->
-<!--        <Compile Include="obj\NETMetaCoderRewrittenCodeSyntax\TestClass.cs"/>-->
-<!--        <Compile Include="obj\NETMetaCoderRewrittenCodeSyntax\TestClass.Companion.cs"/>-->
+<!--        <Compile Include="obj\NETMetaCoderRewrittenCodeSyntax\TestClass.cs" />-->
+<!--        <Compile Include="obj\NETMetaCoderRewrittenCodeSyntax\TestClass.Companion.cs" />-->
 <!--    </ItemGroup>-->
 
 </Project>

@@ -245,7 +245,15 @@ namespace NETMetaCoder
                 .Append(returnExpression)
                 .Where(statement => statement != null);
 
-            var attributeLists = new SyntaxList<AttributeListSyntax>().Add(MethodImplementationAttributeListSyntax);
+            var netMetaCoderMarkerAttributeListSyntaxes = methodSyntaxEnvelope.AttributeNamesFound.Select(_ =>
+                SyntaxFactory.AttributeList(SyntaxFactory.SeparatedList(new[]
+                {
+                    SyntaxFactory.Attribute(SyntaxFactory.ParseName("NETMetaCoderMarker"))
+                })));
+
+            var attributeLists = new SyntaxList<AttributeListSyntax>()
+                .AddRange(netMetaCoderMarkerAttributeListSyntaxes)
+                .Add(MethodImplementationAttributeListSyntax);
 
             if (methodSyntaxEnvelope.MethodObsoletion != null)
             {

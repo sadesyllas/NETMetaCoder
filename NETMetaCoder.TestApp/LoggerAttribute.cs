@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using NETMetaCoder.Abstractions;
 
@@ -8,14 +9,14 @@ namespace NETMetaCoder.TestApp
     public class LoggerAttribute : NETMetaCoderAttribute
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public override void Init(bool async, Type containerType, Type returnType, string methodName,
-            Type[] parameterTypes)
+        public override void Init(MethodBase wrapperMethodBase, MethodInfo wrappedMethodInfo)
         {
-            Console.WriteLine("in logger init");
+            Console.WriteLine("in cache init");
 
-            var pt = parameterTypes.Aggregate("", (acc, t) => $"{acc}, {t.Name}");
+            var pt = wrappedMethodInfo.GetParameters().Aggregate("", (acc, t) => $"{acc}, {t.ParameterType.Name}");
             Console.WriteLine(
-                $"async={async}, returnType={returnType.Name}, methodName={methodName}, parameterTypes={pt}");
+                $"async={wrappedMethodInfo.IsAsync()}, returnType={wrappedMethodInfo.ReturnType.Name}, " +
+                $"methodName={wrappedMethodInfo.Name}, parameterTypes={pt}");
         }
 
         public override InterceptionResult Intercept(object[] arguments)

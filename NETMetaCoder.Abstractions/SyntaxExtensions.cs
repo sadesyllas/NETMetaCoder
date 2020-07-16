@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -66,14 +65,6 @@ namespace NETMetaCoder.Abstractions
         /// <param name="syntax"></param>
         public static bool HasAsyncModifier(this MethodDeclarationSyntax syntax) =>
             syntax.Modifiers.Any(SyntaxKind.AsyncKeyword);
-
-        /// <summary>
-        /// Returns true if the <see cref="MethodDeclarationSyntax"/> defines that the method returns a
-        /// <see cref="Task"/> or a <see cref="Task{T}"/>.
-        /// </summary>
-        /// <param name="syntax"></param>
-        public static bool IsAsync(this MethodDeclarationSyntax syntax) =>
-            syntax.ReturnType.ToString().Split('.').Last().Split('<').First() == "Task";
 
         /// <summary>
         /// Extracts the names of the generic parameters of a <see cref="MethodDeclarationSyntax"/>.

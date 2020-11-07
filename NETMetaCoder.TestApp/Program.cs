@@ -65,7 +65,7 @@ namespace NETMetaCoder.TestApp
                 var codeWrapTransformationOptions = new CodeWrapTransformationOptions(
                     projectRootPath,
                     outputBasePath,
-                    "NETMetaCoderRewrittenCodeSyntax",
+                    "NETMetaCoder",
                     wrappers);
 
                 var codeTransformer = new CodeTransformer(codeWrapTransformationOptions);

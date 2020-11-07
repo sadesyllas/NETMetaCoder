@@ -15,7 +15,6 @@ namespace NETMetaCoder
         /// </summary>
         /// <param name="relativeTo"></param>
         /// <param name="path"></param>
-        /// <returns></returns>
         public static string GetRelativePath(string relativeTo, string path)
         {
             return GetRelativePath(relativeTo, path, StringComparison);
@@ -44,7 +43,7 @@ namespace NETMetaCoder
             }
 
             System.Diagnostics.Debug.Assert(comparisonType == StringComparison.Ordinal ||
-                comparisonType == StringComparison.OrdinalIgnoreCase);
+                                            comparisonType == StringComparison.OrdinalIgnoreCase);
 
             relativeTo = Path.GetFullPath(relativeTo);
             path = Path.GetFullPath(path);
@@ -154,14 +153,14 @@ namespace NETMetaCoder
             var secondRootLength = GetRootLength(second.AsSpan());
 
             return firstRootLength == secondRootLength &&
-                string.Compare(
-                    strA: first,
-                    indexA: 0,
-                    strB: second,
-                    indexB: 0,
-                    length: firstRootLength,
-                    comparisonType: comparisonType) ==
-                0;
+                   string.Compare(
+                       strA: first,
+                       indexA: 0,
+                       strB: second,
+                       indexB: 0,
+                       length: firstRootLength,
+                       comparisonType: comparisonType) ==
+                   0;
         }
 
         private static int GetRootLength(ReadOnlySpan<char> path) =>
@@ -216,8 +215,8 @@ namespace NETMetaCoder
                 char* rightEnd = r + second.Length;
 
                 while (l != leftEnd &&
-                    r != rightEnd &&
-                    (*l == *r || (ignoreCase && char.ToUpperInvariant((*l)) == char.ToUpperInvariant((*r)))))
+                       r != rightEnd &&
+                       (*l == *r || (ignoreCase && char.ToUpperInvariant((*l)) == char.ToUpperInvariant((*r)))))
                 {
                     commonChars++;
                     l++;

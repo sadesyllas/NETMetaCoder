@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="NETMetaCoder.MSBuild" Version="0.1.0-alpha.6" />
+      <PackageReference Include="NETMetaCoder.MSBuild" Version="0.1.0-alpha.22" />
     </ItemGroup>
 
 <!--    <ItemGroup>-->
@@ -32,8 +32,8 @@
 
 <!--    <ItemGroup>-->
 <!--        <Compile Remove="TestClass.cs" />-->
-<!--        <Compile Include="obj\NETMetaCoderRewrittenCodeSyntax\TestClass.cs" />-->
-<!--        <Compile Include="obj\NETMetaCoderRewrittenCodeSyntax\TestClass.Companion.cs" />-->
+<!--        <Compile Include="obj\NETMetaCoder\TestClass.cs" />-->
+<!--        <Compile Include="obj\NETMetaCoder\TestClass.Companion.cs" />-->
 <!--    </ItemGroup>-->
 
 </Project>

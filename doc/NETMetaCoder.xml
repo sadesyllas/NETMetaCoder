@@ -197,7 +197,6 @@
             </summary>
             <param name="relativeTo"></param>
             <param name="path"></param>
-            <returns></returns>
         </member>
         <member name="T:NETMetaCoder.StringExtensions">
             <summary>

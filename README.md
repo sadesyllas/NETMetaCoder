@@ -158,7 +158,7 @@ This is necessary because `NETMetaCoder` changes the original code file.
 When debugging in JetBrains Rider, if the `KeepNETMetaCoderOutput` property is
 set to `true` in the `.csproj` file, then the breakpoint will be hit but the
 IDE will open the corresponding file in the
-`obj/NETMetaCoderRewrittenCodeSyntax` directory.
+`obj/NETMetaCoder` directory.
 
 If the `KeepNETMetaCoderOutput` property is set to `false`, the breakpoint will
 be hit but the error `Could not get symbols` will be reported.
@@ -198,8 +198,9 @@ When building the dependant project, the `RewriteProjectSyntax` MSBuild task
 scans code files and uses the `NETMetaCoder` library to rewrite their syntax,
 if necessary.
 
-This library, although it depends on all others, bundles its dependencies so
-that it's easier to find them when triggered by MSBuild.
+This library, although it depends on all the others, it copies its dependencies
+ in the folder where it is stored, so that it's easier to find them when
+ triggered by MSBuild.
 
 ###### NETMetaCoder.SyntaxWrappers
 

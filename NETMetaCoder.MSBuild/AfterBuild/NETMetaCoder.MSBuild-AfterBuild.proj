@@ -1,4 +1,4 @@
-<Project InitialTargets="GenerateTargetsFile;GatherPackagedDependencies">
+<Project InitialTargets="GenerateTargetsFile">
 
     <PropertyGroup>
         <ProjectRoot Condition=" '$(ProjectRoot)' == '' ">$(MSBuildThisFileDirectory)</ProjectRoot>
@@ -20,24 +20,6 @@
                 PackageId="$(PackageId)"
                 Version="$(Version)"
                 TargetFrameworkMoniker="$(TargetFramework)"/>
-    </Target>
-
-    <UsingTask TaskName="NETMetaCoder.MSBuild.GatherPackagedDependencies" AssemblyFile="$(AssemblyPath)"/>
-    <UsingTask TaskName="NETMetaCoder.MSBuild.CopyAssemblyFiles" AssemblyFile="$(AssemblyPath)"/>
-
-    <Target Name="GatherPackagedDependencies">
-        <RemoveDir Directories="$(PackagedDependenciesPath)"/>
-
-        <MakeDir Directories="$(PackagedDependenciesPath)"/>
-
-        <Message Importance="high" Text="Gathering packaged dependencies into $(PackagedDependenciesPath)."/>
-
-        <GatherPackagedDependencies ReferencedDlls="$(ReferencedDlls)">
-            <Output TaskParameter="DllsToPackage" ItemName="DllsToPackage"/>
-        </GatherPackagedDependencies>
-
-        <!--<Copy SourceFiles="@(DllsToPackage)" DestinationFolder="$(PackagedDependenciesPath)"/>-->
-        <CopyAssemblyFiles AssemblyFilePaths="@(DllsToPackage)" DestinationDirectory="$(PackagedDependenciesPath)"/>
     </Target>
 
 </Project>

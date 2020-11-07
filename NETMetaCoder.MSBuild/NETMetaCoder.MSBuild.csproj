@@ -8,14 +8,7 @@
 
     <PropertyGroup>
         <PackageId>NETMetaCoder.MSBuild</PackageId>
-        <Version>0.1.0-alpha.6</Version>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <PackagedDependenciesPath>$(MSBuildThisFileDirectory)obj</PackagedDependenciesPath>
-        <PackagedDependenciesPath>$(PackagedDependenciesPath)$([System.IO.Path]::DirectorySeparatorChar)PackagedDependencies</PackagedDependenciesPath>
-        <PackagedDependenciesGlob>$(PackagedDependenciesPath)$([System.IO.Path]::DirectorySeparatorChar)**</PackagedDependenciesGlob>
-        <PackagedDependenciesPackagePath>lib$([System.IO.Path]::DirectorySeparatorChar)$(TargetFramework)</PackagedDependenciesPackagePath>
+        <Version>0.1.0-alpha.22</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -35,7 +28,6 @@
         <None Remove=".gitignore" />
         <None Remove="NETMetaCoder.MSBuild-template.targets" />
         <None Update="NETMetaCoder.MSBuild.targets" Pack="true" PackagePath="build" Visible="false" />
-        <None Include="$(PackagedDependenciesGlob)" Pack="true" PackagePath="$(PackagedDependenciesPackagePath)" Visible="false" />
     </ItemGroup>
 
     <ItemGroup>
@@ -53,11 +45,7 @@
             <AfterBuildProjectFilePath>$(AfterBuildProjectFilePath)$([System.String]::Copy('$(MSBuildThisFile)').Replace('.csproj', '-AfterBuild.proj'))</AfterBuildProjectFilePath>
         </PropertyGroup>
 
-        <PropertyGroup>
-            <ReferencedDlls>@(ReferencePath)</ReferencedDlls>
-        </PropertyGroup>
-
-        <MSBuild Projects="$(AfterBuildProjectFilePath)" Properties="ReferencedDlls=$(ReferencedDlls);PackagedDependenciesPath=$(PackagedDependenciesPath);ProjectRoot=$(MSBuildThisFileDirectory);PackageId=$(PackageId);Version=$(Version);TargetFramework=$(TargetFramework)" />
+        <MSBuild Projects="$(AfterBuildProjectFilePath)" Properties="ProjectRoot=$(MSBuildThisFileDirectory);PackageId=$(PackageId);Version=$(Version);TargetFramework=$(TargetFramework)" />
     </Target>
 
 </Project>

@@ -1,5 +1,3 @@
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-
 using System;
 using System.IO;
 using Microsoft.Build.Framework;
@@ -40,13 +38,18 @@ namespace NETMetaCoder.MSBuild
                     var destinationFilePath =
                         Path.Combine(DestinationDirectory, Path.GetFileName(assemblyFilePath.ItemSpec));
 
-                    if (File.Exists(destinationFilePath))
+                    try
                     {
-                        File.Delete(destinationFilePath);
+                        // ReSharper disable once AssignNullToNotNullAttribute
+                        File.Copy(assemblyFilePath.ItemSpec, destinationFilePath);
                     }
-
-                    // ReSharper disable once AssignNullToNotNullAttribute
-                    File.Copy(assemblyFilePath.ItemSpec, destinationFilePath);
+                    catch (IOException)
+                    {
+                        if (!File.Exists(destinationFilePath))
+                        {
+                            throw;
+                        }
+                    }
                 }
 
                 return true;

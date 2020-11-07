@@ -73,24 +73,6 @@
         <member name="M:NETMetaCoder.MSBuild.CopyAssemblyFiles.Execute">
             <inheritdoc cref="M:Microsoft.Build.Utilities.Task.Execute"/>
         </member>
-        <member name="T:NETMetaCoder.MSBuild.GatherPackagedDependencies">
-            <summary>
-            An MSBuild task that gathers dependencies that are necessary for bundling this library.
-            </summary>
-        </member>
-        <member name="P:NETMetaCoder.MSBuild.GatherPackagedDependencies.ReferencedDlls">
-            <summary>
-            A <c>;</c> separated list of paths to DLLs that are referenced by this library.
-            </summary>
-        </member>
-        <member name="P:NETMetaCoder.MSBuild.GatherPackagedDependencies.DllsToPackage">
-            <summary>
-            The DLLs to package as dependencies of this library.
-            </summary>
-        </member>
-        <member name="M:NETMetaCoder.MSBuild.GatherPackagedDependencies.Execute">
-            <inheritdoc cref="M:Microsoft.Build.Utilities.Task.Execute"/>
-        </member>
         <member name="T:NETMetaCoder.MSBuild.GenerateTargetsFile">
              <summary>
              An MSBuild task that reads file <c>NETMetaCoder.MSBuild-template.targets</c> and produces file
@@ -143,6 +125,60 @@
             Messages produced by looping over collections and detailed descriptions of this library's actions are
             logged.
             </summary>
+        </member>
+        <member name="T:NETMetaCoder.MSBuild.ResolveNETMetaCoderLibraryPaths">
+            <summary>
+            An MSBuild task that resolves the paths of the required NETMetaCoder libraries.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.ResolveNETMetaCoderLibraryPaths.MSBuildTargetsDirectoryPath">
+            <summary>
+            The path to the directory where the caller resides.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.ResolveNETMetaCoderLibraryPaths.Version">
+            <summary>
+            The version of the libraries, for which to find the paths.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.ResolveNETMetaCoderLibraryPaths.TargetFrameworkMoniker">
+            <summary>
+            The target framework moniker to search for, when searching for NETMetaCoder libraries.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.ResolveNETMetaCoderLibraryPaths.NETMetaCoderLibraryPaths">
+            <summary>
+            The paths to the required NETMetaCoder libraries.
+            </summary>
+        </member>
+        <member name="M:NETMetaCoder.MSBuild.ResolveNETMetaCoderLibraryPaths.Execute">
+            <inheritdoc cref="M:Microsoft.Build.Utilities.Task.Execute"/>
+        </member>
+        <member name="M:NETMetaCoder.MSBuild.ResolveNETMetaCoderLibraryPaths.GetNormalizedRootedPath(System.String)">
+            <summary>
+            Turn <paramref name="path"/> into a rooted path and replace all <c>..</c> fragments by removing the path
+            fragment that each <c>..</c> path fragment refers to.
+            </summary>
+            <param name="path"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="T:NETMetaCoder.MSBuild.ResolveNuGetPackagesDirectoryPath">
+            <summary>
+            An MSBuild task that resolves the path to the NuGet packages directory.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.ResolveNuGetPackagesDirectoryPath.SearchStartDirectory">
+            <summary>
+            The path to the directory where the caller resides.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.MSBuild.ResolveNuGetPackagesDirectoryPath.NuGetPackagesDirectoryPath">
+            <summary>
+            The path to the directory where the NuGet packages are stored.
+            </summary>
+        </member>
+        <member name="M:NETMetaCoder.MSBuild.ResolveNuGetPackagesDirectoryPath.Execute">
+            <inheritdoc cref="M:Microsoft.Build.Utilities.Task.Execute"/>
         </member>
         <member name="T:NETMetaCoder.MSBuild.RewriteProjectSyntax">
             <summary>

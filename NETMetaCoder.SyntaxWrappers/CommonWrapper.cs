@@ -68,7 +68,7 @@ namespace NETMetaCoder.SyntaxWrappers
                     {
                         $@"
 var {attributeVariableName} = {propertyName}.Value;
-var {interceptionResultVariableName} = {attributeVariableName}.Intercept(new object[] {{{arguments}}}{refArgument});
+var {interceptionResultVariableName} = {attributeVariableName}.Intercept(new object[] {{{arguments}}}{refArgument}, __wrappedMethodCaller);
 if (!{interceptionResultVariableName}.IsIntercepted)
 {{
     try

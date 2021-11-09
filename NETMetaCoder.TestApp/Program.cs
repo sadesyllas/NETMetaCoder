@@ -18,7 +18,7 @@ namespace NETMetaCoder.TestApp
         // ReSharper disable once UnusedParameter.Local
         static void Main(string[] args)
         {
-            const bool compile = false;
+            const bool compile = true;
 
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (compile)

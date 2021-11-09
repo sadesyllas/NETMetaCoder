@@ -66,7 +66,7 @@
         </member>
         <member name="T:NETMetaCoder.Abstractions.InterceptionResult">
             <summary>
-            The result returned by <see cref="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept(System.Object[])"/>.
+            The result returned by <see cref="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept(System.Object[],System.Action)"/>.
             </summary>
         </member>
         <member name="M:NETMetaCoder.Abstractions.InterceptionResult.#ctor">
@@ -198,7 +198,7 @@
              A <see cref="T:System.Reflection.MethodInfo"/> describing the method wrapped by <c>NETMetaCoder</c>.
              </param>
         </member>
-        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept(System.Object[])">
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept(System.Object[],System.Action)">
              <summary>
              This method is called for synchronous wrapped methods that do not return a value.
             
@@ -208,12 +208,15 @@
              <param name="arguments">
              The arguments that were passed to the currently processed invocation of the wrapped method.
              </param>
+             <param name="wrappedMethodCaller">
+             A function that calls the wrapped method.
+             </param>
              <returns>
              Returns an <see cref="T:NETMetaCoder.Abstractions.InterceptionResult"/> that represents whether or not the call to the original method
              has been intercepted.
              </returns>
         </member>
-        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept``1(System.Object[],``0@)">
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept``1(System.Object[],``0@,System.Func{``0})">
              <summary>
              This method is called for synchronous wrapped methods that return a value.
             
@@ -229,12 +232,15 @@
              This value may have already been changed by another <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation, by
              the time that this method gets called.
              </param>
+             <param name="wrappedMethodCaller">
+             A function that calls the wrapped method and returns its result.
+             </param>
              <returns>
              Returns an <see cref="T:NETMetaCoder.Abstractions.InterceptionResult`1"/> that represents whether or not the call to the original
              method has been intercepted and if it has, the value which should replace <paramref name="value"/>.
              </returns>
         </member>
-        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept``1(System.Object[],System.Threading.Tasks.Task{``0}@)">
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept``1(System.Object[],System.Threading.Tasks.Task{``0}@,System.Func{System.Threading.Tasks.Task{``0}})">
              <summary>
              This method is called for asynchronous wrapped methods that return a value, through a <see cref="T:System.Threading.Tasks.Task"/>.
             
@@ -250,6 +256,9 @@
              This value may have already been changed by another <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderAttribute"/> implementation, by
              the time that this method gets called.
              </param>
+             <param name="wrappedMethodCaller">
+             A function that calls the wrapped method and returns its result.
+             </param>
              <returns>
              Returns an <see cref="T:NETMetaCoder.Abstractions.InterceptionResult`1"/> that represents whether or not the call to the original
              method has been intercepted and if it has, the value which should replace <paramref name="value"/>.
@@ -257,7 +266,7 @@
         </member>
         <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.HandleInterceptionResult(NETMetaCoder.Abstractions.InterceptionResult@)">
              <summary>
-             This method is called to handle the <see cref="T:NETMetaCoder.Abstractions.InterceptionResult"/> returned by <see cref="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept(System.Object[])"/>.
+             This method is called to handle the <see cref="T:NETMetaCoder.Abstractions.InterceptionResult"/> returned by <see cref="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Intercept(System.Object[],System.Action)"/>.
             
              This method will be unconditionally called either when the call to the original method is intercepted, or
              not.

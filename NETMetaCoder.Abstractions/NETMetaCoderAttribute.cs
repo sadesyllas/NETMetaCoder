@@ -38,12 +38,16 @@ namespace NETMetaCoder.Abstractions
         /// <param name="arguments">
         /// The arguments that were passed to the currently processed invocation of the wrapped method.
         /// </param>
+        /// <param name="wrappedMethodCaller">
+        /// A function that calls the wrapped method.
+        /// </param>
         /// <returns>
         /// Returns an <see cref="InterceptionResult"/> that represents whether or not the call to the original method
         /// has been intercepted.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual InterceptionResult Intercept(object[] arguments) => InterceptionResult.NotIntercepted();
+        public virtual InterceptionResult Intercept(object[] arguments, Action wrappedMethodCaller) =>
+            InterceptionResult.NotIntercepted();
 
         /// <summary>
         /// This method is called for synchronous wrapped methods that return a value.
@@ -60,14 +64,18 @@ namespace NETMetaCoder.Abstractions
         /// This value may have already been changed by another <see cref="NETMetaCoderAttribute"/> implementation, by
         /// the time that this method gets called.
         /// </param>
+        /// <param name="wrappedMethodCaller">
+        /// A function that calls the wrapped method and returns its result.
+        /// </param>
         /// <returns>
         /// Returns an <see cref="InterceptionResult{T}"/> that represents whether or not the call to the original
         /// method has been intercepted and if it has, the value which should replace <paramref name="value"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual InterceptionResult<TValue> Intercept<TValue>(object[] arguments, ref TValue value)
+        public virtual InterceptionResult<TValue> Intercept<TValue>(object[] arguments, ref TValue value,
+            Func<TValue> wrappedMethodCaller)
         {
-            var result = Intercept(arguments);
+            var result = Intercept(arguments, () => { });
 
             return InterceptionResult<TValue>.From(result);
         }
@@ -87,14 +95,18 @@ namespace NETMetaCoder.Abstractions
         /// This value may have already been changed by another <see cref="NETMetaCoderAttribute"/> implementation, by
         /// the time that this method gets called.
         /// </param>
+        /// <param name="wrappedMethodCaller">
+        /// A function that calls the wrapped method and returns its result.
+        /// </param>
         /// <returns>
         /// Returns an <see cref="InterceptionResult{T}"/> that represents whether or not the call to the original
         /// method has been intercepted and if it has, the value which should replace <paramref name="value"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual InterceptionResult<Task<TValue>> Intercept<TValue>(object[] arguments, ref Task<TValue> value)
+        public virtual InterceptionResult<Task<TValue>> Intercept<TValue>(object[] arguments, ref Task<TValue> value,
+            Func<Task<TValue>> wrappedMethodCaller)
         {
-            var result = Intercept(arguments);
+            var result = Intercept(arguments, () => wrappedMethodCaller());
 
             return InterceptionResult<Task<TValue>>.From(result);
         }
@@ -129,7 +141,7 @@ namespace NETMetaCoder.Abstractions
         public virtual void HandleInterceptionResult<TValue>(ref TValue value,
             ref InterceptionResult<TValue> interceptionResult)
         {
-            var result = (InterceptionResult) interceptionResult;
+            var result = (InterceptionResult)interceptionResult;
 
             HandleInterceptionResult(ref result);
         }
@@ -152,7 +164,7 @@ namespace NETMetaCoder.Abstractions
         public virtual void HandleInterceptionResult<TValue>(ref Task<TValue> value,
             ref InterceptionResult<Task<TValue>> interceptionResult)
         {
-            var result = (InterceptionResult) interceptionResult;
+            var result = (InterceptionResult)interceptionResult;
 
             HandleInterceptionResult(ref result);
         }
@@ -198,7 +210,7 @@ namespace NETMetaCoder.Abstractions
         public virtual bool HandleException<TValue>(Exception exception, ref TValue value,
             ref InterceptionResult<TValue> interceptionResult)
         {
-            var interceptionResultTmp = (InterceptionResult) interceptionResult;
+            var interceptionResultTmp = (InterceptionResult)interceptionResult;
 
             return HandleException(exception, ref interceptionResultTmp);
         }
@@ -227,7 +239,7 @@ namespace NETMetaCoder.Abstractions
         public virtual bool HandleException<TValue>(Exception exception, ref Task<TValue> value,
             ref InterceptionResult<Task<TValue>> interceptionResult)
         {
-            var interceptionResultTmp = (InterceptionResult) interceptionResult;
+            var interceptionResultTmp = (InterceptionResult)interceptionResult;
 
             return HandleException(exception, ref interceptionResultTmp);
         }

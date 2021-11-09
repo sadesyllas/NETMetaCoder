@@ -19,12 +19,13 @@ namespace NETMetaCoder.TestApp
                 $"methodName={wrappedMethodInfo.Name}, parameterTypes={pt}");
         }
 
-        public override InterceptionResult Intercept(object[] arguments)
+        public override InterceptionResult Intercept(object[] arguments, Action _)
         {
             return InterceptionResult.NotIntercepted();
         }
 
-        public override InterceptionResult<TValue> Intercept<TValue>(object[] arguments, ref TValue value)
+        public override InterceptionResult<TValue> Intercept<TValue>(object[] arguments, ref TValue value,
+            Func<TValue> _)
         {
             return InterceptionResult<TValue>.NotIntercepted();
         }

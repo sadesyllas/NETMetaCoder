@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <PackageId>NETMetaCoder</PackageId>
-        <Version>0.1.0-alpha.22</Version>
+        <Version>0.1.0-alpha.28</Version>
     </PropertyGroup>
 
     <ItemGroup>

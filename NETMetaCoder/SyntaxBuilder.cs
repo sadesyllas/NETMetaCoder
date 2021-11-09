@@ -91,8 +91,8 @@ namespace NETMetaCoder
         private NamespaceDeclarationSyntax Build(NamespaceSyntaxEnvelope namespaceSyntaxEnvelope)
         {
             var syntax = namespaceSyntaxEnvelope.NamespaceDeclarationSyntax.WithoutTrivia().WithSurroundingLineFeed() ??
-                throw new ArgumentNullException(
-                    $"{nameof(namespaceSyntaxEnvelope.NamespaceDeclarationSyntax)} must not be null.");
+                         throw new ArgumentNullException(
+                             $"{nameof(namespaceSyntaxEnvelope.NamespaceDeclarationSyntax)} must not be null.");
 
             var namespaceMembers =
                 Build(namespaceSyntaxEnvelope.NamespaceSyntaxEnvelopes).Cast<MemberDeclarationSyntax>();
@@ -113,8 +113,8 @@ namespace NETMetaCoder
         private TypeDeclarationSyntax Build(ClassOrStructSyntaxEnvelope classOrStructSyntaxEnvelope)
         {
             var syntax = classOrStructSyntaxEnvelope.DeclarationSyntax.WithoutTrivia().WithSurroundingLineFeed() ??
-                throw new ArgumentNullException(
-                    $"{nameof(classOrStructSyntaxEnvelope.DeclarationSyntax)} must not be null.");
+                         throw new ArgumentNullException(
+                             $"{nameof(classOrStructSyntaxEnvelope.DeclarationSyntax)} must not be null.");
 
             var typeSyntax = SyntaxFactory.ParseTypeName($"{syntax.Identifier.ToString()}{syntax.TypeParameterList}");
 
@@ -144,7 +144,7 @@ namespace NETMetaCoder
                 new SyntaxList<MemberDeclarationSyntax>(propertyMembers.Concat(methodMembers).Concat(classMembers));
 
             return classOrStructSyntaxEnvelope.IsClassDeclarationSyntax
-                ? (TypeDeclarationSyntax) SyntaxFactory
+                ? (TypeDeclarationSyntax)SyntaxFactory
                     .ClassDeclaration(attributeLists, modifiers, identifier, typeParameterList, baseList,
                         constraintClauses, members)
                     .WithPartialKeywordPrefix()
@@ -158,8 +158,8 @@ namespace NETMetaCoder
             TypeSyntax containerTypeSyntax, MethodSyntaxEnvelope methodSyntaxEnvelope)
         {
             var syntax = methodSyntaxEnvelope.MethodDeclarationSyntax.WithoutTrivia().WithSurroundingLineFeed() ??
-                throw new ArgumentNullException(
-                    $"{nameof(methodSyntaxEnvelope.MethodDeclarationSyntax)} must not be null.");
+                         throw new ArgumentNullException(
+                             $"{nameof(methodSyntaxEnvelope.MethodDeclarationSyntax)} must not be null.");
 
             var methodName = syntax.Identifier;
 
@@ -174,28 +174,28 @@ namespace NETMetaCoder
 
             var typeArguments = syntax.TypeParameterList != null && syntax.TypeParameterList.Parameters.Any()
                 ? "<" +
-                string.Join(", ", syntax.TypeParameterList.Parameters.Select(p => p.Identifier.ToString())) +
-                ">"
+                  string.Join(", ", syntax.TypeParameterList.Parameters.Select(p => p.Identifier.ToString())) +
+                  ">"
                 : "";
 
             var outParameters = new List<ParameterSyntax>();
 
+            var hasRefParameter = false;
+            var hasOutParameter = false;
+
             var arguments = SyntaxFactory.ArgumentList(
                 SyntaxFactory.SeparatedList(syntax.ParameterList.Parameters.Select(p =>
                 {
-                    var isRef = false;
-                    var isOut = false;
-
                     foreach (var modifier in p.Modifiers)
                     {
                         switch (modifier.Kind())
                         {
                             case SyntaxKind.RefKeyword:
-                                isRef = true;
+                                hasRefParameter = true;
 
                                 break;
                             case SyntaxKind.OutKeyword:
-                                isOut = true;
+                                hasOutParameter = true;
 
                                 outParameters.Add(p);
 
@@ -203,9 +203,9 @@ namespace NETMetaCoder
                         }
                     }
 
-                    var parameterExpression = isRef
+                    var parameterExpression = hasRefParameter
                         ? SyntaxFactory.ParseExpression($"ref {p.Identifier}")
-                        : isOut
+                        : hasOutParameter
                             ? SyntaxFactory.ParseExpression($"out {p.Identifier}")
                             : SyntaxFactory.ParseExpression(p.Identifier.ToString());
 
@@ -220,10 +220,17 @@ namespace NETMetaCoder
             var resultDeclarationExpression =
                 isVoid ? null : $"{returnType} {ResultIdentifier} = default({returnType});";
 
-            var callToWrappedMethodExpression = $"{wrappedMethodName}{typeArguments}{arguments.ToFullString()}";
+            var callToWrappedMethodDelegateTypeExpression = isVoid ? "System.Action" : $"System.Func<{returnType}>";
 
-            var resultAssignmentExpression =
-                isVoid ? $"{callToWrappedMethodExpression};" : $"__result = {callToWrappedMethodExpression};";
+            var callToWrappedMethodLocalFunctionDeclarationExpression =
+                $"{callToWrappedMethodDelegateTypeExpression} __wrappedMethodCaller = " + (
+                    hasRefParameter || hasOutParameter
+                        ? "() => throw new InvalidOperationException(" +
+                          "\"Cannot create a delegate for a wrapped method that has a `ref` or `out` parameter. \");"
+                        : $"() => {wrappedMethodName}{typeArguments}{arguments.ToFullString()};"
+                );
+
+            var resultAssignmentExpression = isVoid ? "__wrappedMethodCaller();" : "__result = __wrappedMethodCaller();";
 
             var preExpressions = _options.SelectPreExpressionMappers(methodSyntaxEnvelope.AttributeNamesFound)
                 .Reverse()
@@ -239,6 +246,7 @@ namespace NETMetaCoder
             var expressions = new List<string>()
                 .Concat(outParameterInitializations)
                 .Append(resultDeclarationExpression)
+                .Append(callToWrappedMethodLocalFunctionDeclarationExpression)
                 .Concat(preExpressions)
                 .Append(resultAssignmentExpression)
                 .Concat(postExpressions)
@@ -259,7 +267,7 @@ namespace NETMetaCoder
             {
                 attributeLists = attributeLists.Add(
                     SyntaxFactory.AttributeList(SyntaxFactory.SeparatedList(new[]
-                        {methodSyntaxEnvelope.MethodObsoletion})));
+                        { methodSyntaxEnvelope.MethodObsoletion })));
             }
 
             var attributes = new SyntaxList<AttributeListSyntax>(attributeLists);
@@ -277,7 +285,7 @@ namespace NETMetaCoder
                 syntax.ConstraintClauses, body, null);
 
             var propertyDeclarations = propertiesSyntax
-                .Select(p => (PropertyDeclarationSyntax) SyntaxFactory.ParseMemberDeclaration(p))
+                .Select(p => (PropertyDeclarationSyntax)SyntaxFactory.ParseMemberDeclaration(p))
                 .ToImmutableList();
 
             return (propertyDeclarations, methodSyntax);

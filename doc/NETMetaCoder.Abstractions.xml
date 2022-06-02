@@ -187,7 +187,7 @@
         </member>
         <member name="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Init(System.Reflection.MethodBase,System.Reflection.MethodInfo)">
              <summary>
-             This method is called when the methods attribute is first read and cached, during runtime.
+             This method is called when the method's attribute is first read and cached, during runtime.
             
              It is meant to initialize the attribute's state.
              </summary>
@@ -380,22 +380,18 @@
              <summary>
              A marker attribute that is applied by <c>NETMetaCoder</c> to generated wrapper methods.
             
-             This attribute is meant to hold the instance of the wrapper attribute which caused the original method to be
-             wrapped.
-            
-             There is one instance of a <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderMarkerAttribute"/> for each such wrapper attribute.
-            
-             If needed, this instance is meant to be initialized in the attribute's <see cref="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Init(System.Reflection.MethodBase,System.Reflection.MethodInfo)"/>
-             implementation.
+             Each instance of this attribute holds a unique id.
              </summary>
         </member>
-        <member name="P:NETMetaCoder.Abstractions.NETMetaCoderMarkerAttribute.WrapperAttribute">
-             <summary>
-             The instance of the attribute which caused the original method to be wrapped.
-            
-             If needed, this is meant to be initialized in the attribute's <see cref="M:NETMetaCoder.Abstractions.NETMetaCoderAttribute.Init(System.Reflection.MethodBase,System.Reflection.MethodInfo)"/>
-             implementation.
-             </summary>
+        <member name="M:NETMetaCoder.Abstractions.NETMetaCoderMarkerAttribute.#ctor(System.String)">
+            <summary>
+            Constructs a <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderMarkerAttribute"/> instance with a new <see cref="T:System.Guid"/>.
+            </summary>
+        </member>
+        <member name="P:NETMetaCoder.Abstractions.NETMetaCoderMarkerAttribute.Id">
+            <summary>
+            A <see cref="T:System.Guid"/> which identifies a single <see cref="T:NETMetaCoder.Abstractions.NETMetaCoderMarkerAttribute"/> instance.
+            </summary>
         </member>
         <member name="T:NETMetaCoder.Abstractions.ParameterInfoEqualityComparer">
             <summary>

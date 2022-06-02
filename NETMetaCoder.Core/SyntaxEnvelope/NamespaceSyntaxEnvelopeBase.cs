@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace NETMetaCoder.SyntaxEnvelope
+namespace NETMetaCoder.Core.SyntaxEnvelope
 {
     /// <summary>
     /// A type that holds the syntax elements found in a namespace declaration.

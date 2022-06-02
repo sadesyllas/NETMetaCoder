@@ -1,15 +1,23 @@
 <Project>
 
     <PropertyGroup>
+        <ThisLibraryPathLocal>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), 'NETMetaCoder.MSBuild.dll'))</ThisLibraryPathLocal>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="Exists($(ThisLibraryPathLocal))">
+        <ThisLibraryPath>$(ThisLibraryPathLocal)</ThisLibraryPath>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="$(ThisLibraryPath) == ''">
         <ThisLibraryDirectory>$(MSBuildThisFileDirectory)$([System.IO.Path]::DirectorySeparatorChar)..</ThisLibraryDirectory>
         <ThisLibraryDirectory>$(ThisLibraryDirectory)$([System.IO.Path]::DirectorySeparatorChar)lib</ThisLibraryDirectory>
-        <ThisLibraryDirectory>$(ThisLibraryDirectory)$([System.IO.Path]::DirectorySeparatorChar)${TARGET_FRAMEWORK_MONIKER}</ThisLibraryDirectory>
+        <ThisLibraryDirectory>$(ThisLibraryDirectory)$([System.IO.Path]::DirectorySeparatorChar)netstandard2.0</ThisLibraryDirectory>
     </PropertyGroup>
 
-    <PropertyGroup>
+    <PropertyGroup Condition="$(ThisLibraryPath) == ''">
         <ThisLibraryPath>$(ThisLibraryDirectory)$([System.IO.Path]::DirectorySeparatorChar)NETMetaCoder.MSBuild.dll</ThisLibraryPath>
     </PropertyGroup>
-
+    
     <PropertyGroup>
         <OutputDirectoryName>NETMetaCoder</OutputDirectoryName>
     </PropertyGroup>
@@ -27,24 +35,13 @@
         <Compile Remove="$(RewrittenCodeSyntaxPath)$([System.IO.Path]::DirectorySeparatorChar)**"/>
     </ItemGroup>
 
-    <UsingTask TaskName="NETMetaCoder.MSBuild.ResolveNETMetaCoderLibraryPaths" AssemblyFile="$(ThisLibraryPath)"/>
-    <UsingTask TaskName="NETMetaCoder.MSBuild.CopyAssemblyFiles" AssemblyFile="$(ThisLibraryPath)"/>
-
-    <Target Name="BeforeRewriteProjectSyntax" AfterTargets="Restore" BeforeTargets="RewriteProjectSyntax" Condition=" '$(DisableNETMetaCoder)' != 'true' ">
-        <ResolveNETMetaCoderLibraryPaths MSBuildTargetsDirectoryPath="$(MSBuildThisFileDirectory)" Version="${VERSION}" TargetFrameworkMoniker="${TARGET_FRAMEWORK_MONIKER}">
-            <Output TaskParameter="NETMetaCoderLibraryPaths" ItemName="NETMetaCoderLibraryPaths"/>
-        </ResolveNETMetaCoderLibraryPaths>
-
-        <CopyAssemblyFiles AssemblyFilePaths="@(NETMetaCoderLibraryPaths)" DestinationDirectory="$(ThisLibraryDirectory)"/>
-    </Target>
-
-    <!--<UsingTask TaskName="NETMetaCoder.MSBuild.RewriteProjectSyntax" AssemblyFile="$(NuGetPackageRoot)\${PACKAGE_ID}\${VERSION}\lib\${TARGET_FRAMEWORK_MONIKER}\NETMetaCoder.MSBuild.dll"/>-->
     <UsingTask TaskName="NETMetaCoder.MSBuild.RewriteProjectSyntax" AssemblyFile="$(ThisLibraryPath)"/>
 
-    <Target Name="RewriteProjectSyntax" AfterTargets="Restore" BeforeTargets="BeforeBuild" Condition=" '$(DisableNETMetaCoder)' != 'true' " DependsOnTargets="BeforeRewriteProjectSyntax">
+    <Target Name="RewriteProjectSyntax" AfterTargets="Restore" BeforeTargets="BeforeBuild" Condition=" '$(DisableNETMetaCoder)' != 'true' ">
         <Message Text="[NETMetaCoder] Rewritting the code syntax in $(MSBuildProjectName)." Importance="high"/>
 
         <RewriteProjectSyntax
+                TargetsFileDirectory="$(MSBuildThisFileDirectory)"
                 ProjectRootDirectory="$(MSBuildProjectDirectory)"
                 CompilationUnits="@(Compile)"
                 OutputDirectoryName="$(OutputDirectoryName)"

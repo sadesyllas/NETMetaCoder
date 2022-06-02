@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace NETMetaCoder.Abstractions
     public abstract class NETMetaCoderAttribute : Attribute
     {
         /// <summary>
-        /// This method is called when the methods attribute is first read and cached, during runtime.
+        /// This method is called when the method's attribute is first read and cached, during runtime.
         ///
         /// It is meant to initialize the attribute's state.
         /// </summary>

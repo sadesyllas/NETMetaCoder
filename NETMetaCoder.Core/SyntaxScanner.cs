@@ -6,9 +6,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NETMetaCoder.Abstractions;
-using NETMetaCoder.SyntaxEnvelope;
+using NETMetaCoder.Core.SyntaxEnvelope;
 
-namespace NETMetaCoder
+namespace NETMetaCoder.Core
 {
     /// <summary>
     /// This type encapsulates the logic for building a <see cref="SyntaxEnvelope"/>, by scanning the syntax tree of a
@@ -49,7 +49,12 @@ namespace NETMetaCoder
             {
                 if (_tree.GetDiagnostics().Any(d => d.Severity == DiagnosticSeverity.Error))
                 {
-                    throw new NETMetaCoderException("The syntax tree has errors and no scanning will take place.");
+                    var errorIds = string.Join(Environment.NewLine, _tree.GetDiagnostics()
+                        .Where(d => d.Severity == DiagnosticSeverity.Error)
+                        .Select(d => d.ToString()));
+
+                    throw new NETMetaCoderException(
+                        $"The syntax tree has errors and no scanning will take place:{Environment.NewLine}{errorIds}");
                 }
 
                 Visit(_tree.GetCompilationUnitRoot());
@@ -105,10 +110,7 @@ namespace NETMetaCoder
                 AttributeSyntax methodObsoletion = null;
 
                 var attributeNamesFound = node.FindAttributes(_attributeNames,
-                    (_, referenceAttributeName) =>
-                    {
-                        _syntaxEnvelope.AddAttributeNameFound(referenceAttributeName);
-                    },
+                    (_, referenceAttributeName) => { _syntaxEnvelope.AddAttributeNameFound(referenceAttributeName); },
                     attributeSyntax =>
                     {
                         if (attributeSyntax.IsMethodObsoletionAttribute())
@@ -248,9 +250,9 @@ namespace NETMetaCoder
                         // if the current class or struct syntax node is the same as the new syntax node's parent, then
                         // we have found the node under which we need to place the new syntax node.
                         if ((node.Parent is ClassDeclarationSyntax classSyntaxParent &&
-                                IsSameNode(classSyntaxParent, classOrStructSyntaxEnvelope.ClassDeclarationSyntax)) ||
+                             IsSameNode(classSyntaxParent, classOrStructSyntaxEnvelope.ClassDeclarationSyntax)) ||
                             (node.Parent is StructDeclarationSyntax structSyntaxParent &&
-                                IsSameNode(structSyntaxParent, classOrStructSyntaxEnvelope.StructDeclarationSyntax)))
+                             IsSameNode(structSyntaxParent, classOrStructSyntaxEnvelope.StructDeclarationSyntax)))
                         {
                             foundParentClassOrStructSyntax = true;
 
@@ -366,9 +368,9 @@ namespace NETMetaCoder
                     // if the current class or struct syntax node is the same as the new syntax node's parent, then we
                     // have found the node under which we need to place the new syntax node.
                     if ((node.Parent is ClassDeclarationSyntax classSyntaxParent &&
-                            IsSameNode(classSyntaxParent, classOrStructSyntaxEnvelope.ClassDeclarationSyntax)) ||
+                         IsSameNode(classSyntaxParent, classOrStructSyntaxEnvelope.ClassDeclarationSyntax)) ||
                         (node.Parent is StructDeclarationSyntax structSyntaxParent &&
-                            IsSameNode(structSyntaxParent, classOrStructSyntaxEnvelope.StructDeclarationSyntax)))
+                         IsSameNode(structSyntaxParent, classOrStructSyntaxEnvelope.StructDeclarationSyntax)))
                     {
                         break;
                     }

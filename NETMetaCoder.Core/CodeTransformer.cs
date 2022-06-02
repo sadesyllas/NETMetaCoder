@@ -2,7 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace NETMetaCoder
+namespace NETMetaCoder.Core
 {
     /// <summary>
     /// This class provides the core functionality of the library.

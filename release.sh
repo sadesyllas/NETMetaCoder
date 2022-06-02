@@ -1,9 +1,9 @@
 #!/bin/bash
 
 if [ -z "${NMC_S}" ]; then
-    echo "The package source repository must be provided through the NMC_S environment variable." >&2
-
-    exit 1
+    echo "The package source repository will be defaulted to https://api.nuget.org/v3/index.json."
+    
+    NMC_S="https://api.nuget.org/v3/index.json"
 fi
 
 if [ -z "${NMC_K}" ]; then
@@ -16,7 +16,7 @@ FAILED_TO_PUSH=()
 
 pushd "$(dirname "$0")"
 
-for p in NETMetaCoder.Abstractions NETMetaCoder.SyntaxWrappers NETMetaCoder NETMetaCoder.MSBuild; do
+for p in NETMetaCoder.Abstractions NETMetaCoder.SyntaxWrappers NETMetaCoder.MSBuild; do
     echo "Pushing package ${p}."
     pushd "${p}"
     dotnet clean

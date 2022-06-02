@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace NETMetaCoder.SyntaxEnvelope
+namespace NETMetaCoder.Core.SyntaxEnvelope
 {
     /// <inheritdoc cref="ClassOrStructSyntaxEnvelopeBase"/>
     public sealed class ClassOrStructSyntaxEnvelope : ClassOrStructSyntaxEnvelopeBase, IIndexedSyntaxEnvelope

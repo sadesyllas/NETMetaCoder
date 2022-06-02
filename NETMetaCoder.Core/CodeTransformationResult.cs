@@ -1,4 +1,4 @@
-namespace NETMetaCoder
+namespace NETMetaCoder.Core
 {
     /// <summary>
     /// The result of making a code transformation pass through a compilation unit.

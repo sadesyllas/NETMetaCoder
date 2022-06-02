@@ -2,9 +2,9 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using NETMetaCoder.SyntaxEnvelope;
+using NETMetaCoder.Core.SyntaxEnvelope;
 
-namespace NETMetaCoder
+namespace NETMetaCoder.Core
 {
     /// <summary>
     /// Provides utilities meant only as a debugging tool, during development.

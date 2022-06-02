@@ -255,18 +255,18 @@ public class Class1
                     return default;
                 }
 
-                [Logger]
-                // [Cache]
-                [Obsolete("StructInner__Method3", false)]
-                public static IEnumerable<Z> StructInner__Method3<T, U, Z>(Task<U> x, Dictionary<T, U> y, ref int w,
-                    out string z)
-                {
-                    w *= 3;
-
-                    z = "out";
-
-                    return default;
-                }
+                // [Logger]
+                // // [Cache]
+                // [Obsolete("StructInner__Method3", false)]
+                // public static IEnumerable<Z> StructInner__Method3<T, U, Z>(Task<U> x, Dictionary<T, U> y, ref int w,
+                //     out string z)
+                // {
+                //     w *= 3;
+                //
+                //     z = "out";
+                //
+                //     return default;
+                // }
 
                 [Logger]
                 [Obsolete("StructInner__Method4", true)]

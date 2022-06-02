@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 
-namespace NETMetaCoder
+namespace NETMetaCoder.Core
 {
     /// <summary>
     /// Represents the result of an invocation of <see cref="SyntaxRewriter"/>.

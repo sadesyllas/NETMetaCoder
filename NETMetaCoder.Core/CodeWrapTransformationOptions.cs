@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NETMetaCoder.Abstractions;
 
-namespace NETMetaCoder
+namespace NETMetaCoder.Core
 {
     /// <summary>
     /// This type represents the options passed to <see cref="CodeTransformer"/>, in order to process a compilation

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace NETMetaCoder.SyntaxEnvelope
+namespace NETMetaCoder.Core.SyntaxEnvelope
 {
     /// <summary>
     /// A type that holds the syntax elements found in a method declaration.

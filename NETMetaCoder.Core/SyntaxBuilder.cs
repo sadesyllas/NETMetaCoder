@@ -6,9 +6,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NETMetaCoder.Abstractions;
-using NETMetaCoder.SyntaxEnvelope;
+using NETMetaCoder.Core.SyntaxEnvelope;
 
-namespace NETMetaCoder
+namespace NETMetaCoder.Core
 {
     /// <summary>
     /// This type produces the syntax that wraps method calls in a compilation unit, based on a
@@ -222,15 +222,23 @@ namespace NETMetaCoder
 
             var callToWrappedMethodDelegateTypeExpression = isVoid ? "System.Action" : $"System.Func<{returnType}>";
 
-            var callToWrappedMethodLocalFunctionDeclarationExpression =
-                $"{callToWrappedMethodDelegateTypeExpression} __wrappedMethodCaller = " + (
-                    hasRefParameter || hasOutParameter
-                        ? "() => throw new InvalidOperationException(" +
-                          "\"Cannot create a delegate for a wrapped method that has a `ref` or `out` parameter. \");"
-                        : $"() => {wrappedMethodName}{typeArguments}{arguments.ToFullString()};"
-                );
+            string callToWrappedMethodLocalFunctionDeclarationExpression;
+            var resultAssignmentExpression = string.Empty;
 
-            var resultAssignmentExpression = isVoid ? "__wrappedMethodCaller();" : "__result = __wrappedMethodCaller();";
+            if (hasRefParameter || hasOutParameter)
+            {
+                callToWrappedMethodLocalFunctionDeclarationExpression =
+                    "#error Cannot create a delegate for a wrapped method that has a `ref` or `out` parameter.";
+            }
+            else
+            {
+                callToWrappedMethodLocalFunctionDeclarationExpression =
+                    $"{callToWrappedMethodDelegateTypeExpression} __wrappedMethodCaller = " +
+                    $"() => {wrappedMethodName}{typeArguments}{arguments.ToFullString()};";
+
+                resultAssignmentExpression =
+                    isVoid ? "__wrappedMethodCaller();" : "__result = __wrappedMethodCaller();";
+            }
 
             var preExpressions = _options.SelectPreExpressionMappers(methodSyntaxEnvelope.AttributeNamesFound)
                 .Reverse()
@@ -253,14 +261,19 @@ namespace NETMetaCoder
                 .Append(returnExpression)
                 .Where(statement => statement != null);
 
-            var netMetaCoderMarkerAttributeListSyntaxes = methodSyntaxEnvelope.AttributeNamesFound.Select(_ =>
-                SyntaxFactory.AttributeList(SyntaxFactory.SeparatedList(new[]
-                {
-                    SyntaxFactory.Attribute(SyntaxFactory.ParseName("NETMetaCoderMarker"))
-                })));
+            var netMetaCoderMarkerAttributeListSyntax = SyntaxFactory.AttributeList(SyntaxFactory.SeparatedList(new[]
+            {
+                SyntaxFactory.Attribute(
+                    SyntaxFactory.ParseName("NETMetaCoderMarker"),
+                    SyntaxFactory.AttributeArgumentList(SyntaxFactory.SeparatedList(new[]
+                    {
+                        SyntaxFactory.AttributeArgument(
+                            SyntaxFactory.ParseExpression($"\"{Guid.NewGuid().ToString()}\""))
+                    })))
+            }));
 
             var attributeLists = new SyntaxList<AttributeListSyntax>()
-                .AddRange(netMetaCoderMarkerAttributeListSyntaxes)
+                .Add(netMetaCoderMarkerAttributeListSyntax)
                 .Add(MethodImplementationAttributeListSyntax);
 
             if (methodSyntaxEnvelope.MethodObsoletion != null)

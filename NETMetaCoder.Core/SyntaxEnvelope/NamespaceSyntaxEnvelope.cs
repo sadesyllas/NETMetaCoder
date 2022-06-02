@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace NETMetaCoder.SyntaxEnvelope
+namespace NETMetaCoder.Core.SyntaxEnvelope
 {
     /// <inheritdoc cref="NamespaceSyntaxEnvelopeBase"/>
     public sealed class NamespaceSyntaxEnvelope : NamespaceSyntaxEnvelopeBase, IIndexedSyntaxEnvelope

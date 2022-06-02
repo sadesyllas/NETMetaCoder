@@ -2,23 +2,32 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using NETMetaCoder.Abstractions;
-using NETMetaCoder.SyntaxWrappers;
+
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace NETMetaCoder.MSBuild
 {
     /// <summary>
     /// An MSBuild task that scans a project that depends on this library and rewrites the syntax where necessary.
     /// </summary>
-    /// <seealso cref="AttributesIndexReader"/>
-    /// <seealso cref="CodeTransformer"/>
+    /// <remarks>
+    /// Also check <c>NETMetaCoder.AttributesIndexReader</c> and <c>NETMetaCoder.Core.CodeTransformer</c>.
+    /// </remarks>
     public sealed class RewriteProjectSyntax : Task
     {
+        /// <summary>
+        /// The directory containing the targets file, from which this <see cref="Task"/> has been called.
+        /// </summary>
+        [Required]
+        public string TargetsFileDirectory { get; set; }
+
         /// <summary>
         /// The path to the root directory of the project that this library is a dependency of.
         /// </summary>
@@ -44,7 +53,9 @@ namespace NETMetaCoder.MSBuild
         /// <summary>
         /// The logging level to apply when executing this MSBuild task.
         /// </summary>
-        /// <seealso cref="NETMetaCoder.MSBuild.LogLevel"/>
+        /// <remarks>
+        /// It corresponds to values from the <c>NETMetaCoder.LogLevel</c>Z enumeration.
+        /// </remarks>
         public byte LogLevel { get; set; }
 
         /// <summary>
@@ -58,201 +69,170 @@ namespace NETMetaCoder.MSBuild
         [Output]
         public ITaskItem[] NewCompilationUnits { get; set; }
 
-        private LogLevel EffectiveLogLevel => (LogLevel) LogLevel;
-
-        /// <inheritdoc cref="Task.Execute"/>
+        /// <inheritdoc />
         public override bool Execute()
         {
-            try
+            if (!Directory.Exists(TargetsFileDirectory))
             {
-                if (!Directory.Exists(ProjectRootDirectory))
+                Log.LogError("[NETMetaCoder] The provided directory does not exist");
+
+                return false;
+            }
+
+#if DEBUG
+            var executablePath =
+                Path.Combine(TargetsFileDirectory, "..", "..", "..", "..", "NETMetaCoder", "bin", "Debug", "net6.0",
+                    "NETMetaCoder");
+#else
+            var executablePath =
+                Environment.GetEnvironmentVariable("NETMETACODER_PATH") ??
+                Path.Combine(Path.GetPathRoot(Environment.CurrentDirectory), "NETMetaCoder", "NETMetaCoder");
+#endif
+
+            if (!File.Exists(executablePath))
+            {
+                var exeExecutablePath = $"{executablePath}.exe";
+
+                if (File.Exists(exeExecutablePath))
                 {
-                    throw new ArgumentException(
-                        $"[NETMetaCoder] \"{ProjectRootDirectory}\" is not a directory.", nameof(ProjectRootDirectory));
+                    executablePath = exeExecutablePath;
                 }
+                else
+                {
+                    Log.LogError("[NETMetaCoder] The path to the NETMetaCoder executable could not be found at: " +
+                                 $"{executablePath}(.exe)");
 
-                var compilationUnits = new List<ITaskItem>();
-                var newCompilationUnits = new List<ITaskItem>();
+                    return false;
+                }
+            }
 
+            if (!Directory.Exists(ProjectRootDirectory))
+            {
+                Log.LogError($"[NETMetaCoder] \"{ProjectRootDirectory}\" is not a directory.");
+
+                return false;
+            }
+
+            var inputFilePath = Path.Combine(ProjectRootDirectory, "obj", "NETMetaCoder_input.txt");
+
+            using (var inputFile = File.Open(inputFilePath, FileMode.Create))
+            {
                 foreach (var compilationUnit in CompilationUnits)
                 {
-                    if (compilationUnit.ItemSpec.EndsWith("AssemblyAttributes.cs") ||
-                        compilationUnit.ItemSpec.EndsWith("AssemblyInfo.cs"))
-                    {
-                        if (EffectiveLogLevel >= MSBuild.LogLevel.Loud)
-                        {
-                            Log.LogMessage(MessageImportance.High,
-                                $"[NETMetaCoder] Passthrough compilation unit: {compilationUnit.ItemSpec}.");
-                        }
-
-                        newCompilationUnits.Add(compilationUnit);
-                    }
-                    else
-                    {
-                        compilationUnits.Add(compilationUnit);
-                    }
+                    var bytes = Encoding.UTF8.GetBytes($"{compilationUnit.ItemSpec}\n");
+                    inputFile.Write(bytes, 0, bytes.Length);
                 }
+            }
 
-                var outputBasePath = Path.Combine(ProjectRootDirectory, "obj");
+            Log.LogMessage(MessageImportance.High,
+                $"[NETMetaCoder] Written {CompilationUnits.Length} compilation units in {inputFilePath}");
 
-                var compilationUnitDescriptors = compilationUnits
-                    .Select(compilationUnit =>
-                    {
-                        var filePath = Path.Combine(ProjectRootDirectory, compilationUnit.ItemSpec);
+            var outputFilePath = Path.Combine(ProjectRootDirectory, "obj", "NETMetaCoder_output.txt");
 
-                        return (compilationUnit, filePath);
-                    })
-                    .ToImmutableList();
+            try
+            {
+                var args = $"-p \"{ProjectRootDirectory}\" -o \"{OutputDirectoryName}\" -u {inputFilePath} " +
+                           $"-U {outputFilePath} -v {LogLevel}";
 
-                IImmutableList<AttributeDescriptor> attributeDescriptors;
+                Log.LogMessage(MessageImportance.High,
+                    $"[NETMetaCoder] Running NETMetaCoder with command: \"{executablePath}\" {args}");
 
-                try
+                var proc = Process.Start(new ProcessStartInfo
                 {
-                    attributeDescriptors = AttributesIndexReader.Read(ProjectRootDirectory);
-                }
-                catch (Exception exception)
+                    FileName = executablePath,
+                    Arguments = args,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                });
+
+                if (proc == null)
                 {
-                    Log.LogErrorFromException(exception, true);
+                    Log.LogError($"[NETMetaCoder] Could not run NETMetaCoder executable: {executablePath}");
 
                     return false;
                 }
 
-                var wrappers = attributeDescriptors.Select(attributeDescriptor =>
-                    {
-                        var (usings, propertySyntaxGenerator, statementWrappers) =
-                            SyntaxWrappersIndex.WrapperTypes[attributeDescriptor.WrapperType];
+                Log.LogMessage(MessageImportance.High,
+                    "[NETMetaCoder] Reading NETMetaCoder output through stdout and stderr");
 
-                        return (attributeDescriptor, (usings, propertySyntaxGenerator, statementWrappers));
-                    })
-                    .ToImmutableDictionary(
-                        kv =>
-                        {
-                            var (a, _) = kv;
+                var stdout = proc.StandardOutput.ReadToEnd();
+                var stderr = proc.StandardError.ReadToEnd();
 
-                            return a;
-                        },
-                        kv =>
-                        {
-                            var (_, b) = kv;
+                proc.WaitForExit();
 
-                            return b;
-                        });
-
-                if (!wrappers.Any())
+                if (!string.IsNullOrWhiteSpace(stdout))
                 {
-                    Log.LogWarning(
-                        "[NETMetaCoder] No attribute names have been configured for wrapping. " +
-                        "Consider removing the reference to NETMetaCoder.");
-
-                    return true;
+                    Log.LogMessage(MessageImportance.High, stdout);
                 }
 
-                var codeWrapTransformationOptions = new CodeWrapTransformationOptions(
-                    ProjectRootDirectory,
-                    outputBasePath,
-                    OutputDirectoryName,
-                    wrappers);
-
-                if (EffectiveLogLevel >= MSBuild.LogLevel.Normal)
+                if (!string.IsNullOrWhiteSpace(stderr))
                 {
-                    Log.LogMessage(MessageImportance.High,
-                        "[NETMetaCoder] Using options:\n" +
-                        $"\t{nameof(codeWrapTransformationOptions.FileBasePath)}=" +
-                        $"{codeWrapTransformationOptions.FileBasePath}\n" +
-                        $"\t{nameof(codeWrapTransformationOptions.OutputBasePath)}=" +
-                        $"{codeWrapTransformationOptions.OutputBasePath}\n" +
-                        $"\t{nameof(codeWrapTransformationOptions.OutputDirectoryName)}=" +
-                        $"{codeWrapTransformationOptions.OutputDirectoryName}");
-
-                    Log.LogMessage(MessageImportance.High, "[NETMetaCoder] Searching for attributes");
-
-                    foreach (var attributeName in codeWrapTransformationOptions.AttributeNames)
-                    {
-                        Log.LogMessage(MessageImportance.High, $"\t{attributeName}");
-                    }
+                    Log.LogError(stderr);
                 }
 
-                var codeTransformer = new CodeTransformer(codeWrapTransformationOptions);
-                var atLeastOneTransformation = false;
 
-                foreach (var (compilationUnit, filePath) in compilationUnitDescriptors)
+                if (proc.ExitCode != 0)
                 {
-                    if (EffectiveLogLevel >= MSBuild.LogLevel.Loud)
-                    {
-                        Log.LogMessage(MessageImportance.High,
-                            $"[NETMetaCoder] Checking the code syntax in {compilationUnit.ItemSpec} ({filePath}).");
-                    }
+                    Log.LogError(
+                        $"[NETMetaCoder] The NETMetaCoder executable did not run successfully (exit code: {proc.ExitCode})");
 
-                    CodeTransformationResult codeTransformationResult;
+                    return false;
+                }
 
-                    try
-                    {
-                        codeTransformationResult = codeTransformer.Wrap(filePath);
-                    }
-                    catch (NETMetaCoderException exception)
-                    {
-                        Log.LogError($"{filePath}: {exception.Message}");
+                Log.LogMessage(MessageImportance.High,
+                    $"[NETMetaCoder] Reading new compilation units from {outputFilePath}");
 
-                        return false;
-                    }
+                if (!File.Exists(outputFilePath))
+                {
+                    Log.LogError(($"[NETMetaCoder] Output path {outputFilePath} does not exist"));
 
-                    if (codeTransformationResult.TransformationOccured)
-                    {
-                        atLeastOneTransformation = true;
+                    return false;
+                }
 
-                        if (EffectiveLogLevel >= MSBuild.LogLevel.Normal)
-                        {
-                            Log.LogMessage(MessageImportance.High,
-                                $"[NETMetaCoder] Rewritten the code syntax in {compilationUnit.ItemSpec}.");
-                        }
+                var newCompilationUnits = new List<ITaskItem>();
 
-                        var mirrorFilePathItemSpec =
-                            PathHelper.GetRelativePath(ProjectRootDirectory, codeTransformationResult.MirrorFilePath);
+                foreach (var line in Regex.Split(File.ReadAllText(outputFilePath), "\r?\n")
+                             .Where(line => !line.StartsWith("[NETMetaCoder]") && line.Trim() != string.Empty))
+                {
+                    var parts = line.Split(new[] { ',' }, 2);
 
-                        newCompilationUnits.Add(new TaskItem(compilationUnit) {ItemSpec = mirrorFilePathItemSpec});
+                    var index = ulong.Parse(parts[0]);
+                    var filePath = parts[1];
 
-                        var companionFilePathItemSpec =
-                            PathHelper.GetRelativePath(ProjectRootDirectory,
-                                codeTransformationResult.CompanionFilePath);
-
-                        newCompilationUnits.Add(new TaskItem(compilationUnit) {ItemSpec = companionFilePathItemSpec});
-
-                        if (EffectiveLogLevel >= MSBuild.LogLevel.Loud)
-                        {
-                            Log.LogMessage(MessageImportance.High,
-                                "[NETMetaCoder] Changed compilation units:\n" +
-                                $"\t{mirrorFilePathItemSpec} ({codeTransformationResult.MirrorFilePath})\n" +
-                                $"\t{companionFilePathItemSpec} ({codeTransformationResult.CompanionFilePath})");
-                        }
-                    }
-                    else
-                    {
-                        if (EffectiveLogLevel >= MSBuild.LogLevel.Loud)
-                        {
-                            Log.LogMessage(MessageImportance.High,
-                                $"[NETMetaCoder] Unchanged compilation unit: {compilationUnit.ItemSpec} ({filePath}).");
-                        }
-
-                        newCompilationUnits.Add(compilationUnit);
-                    }
+                    newCompilationUnits.Add(new TaskItem(CompilationUnits[index]) { ItemSpec = filePath });
                 }
 
                 NewCompilationUnits = newCompilationUnits.ToArray();
 
-                if (!atLeastOneTransformation)
-                {
-                    Log.LogWarning(
-                        "[NETMetaCoder] No code syntax transformations were made. " +
-                        "Consider removing the reference to NETMetaCoder.");
-                }
+                Log.LogMessage(MessageImportance.High,
+                    $"[NETMetaCoder] Read {NewCompilationUnits.Length} new compilation units from {outputFilePath}");
 
                 return true;
             }
             catch (Exception exception)
             {
-                Log.LogErrorFromException(exception, true);
+                Log.LogErrorFromException(exception, true, true, null);
 
                 return false;
+            }
+            finally
+            {
+                if (File.Exists(inputFilePath))
+                {
+                    Log.LogMessage(MessageImportance.High,
+                        $"[NETMetaCoder] Removing the compilation units input file: {inputFilePath}");
+
+                    File.Delete(inputFilePath);
+                }
+
+                if (File.Exists(outputFilePath))
+                {
+                    Log.LogMessage(MessageImportance.High,
+                        $"[NETMetaCoder] Removing the compilation units output file: {outputFilePath}");
+
+                    File.Delete(outputFilePath);
+                }
             }
         }
     }

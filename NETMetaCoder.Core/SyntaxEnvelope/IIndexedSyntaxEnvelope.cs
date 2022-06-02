@@ -1,4 +1,4 @@
-namespace NETMetaCoder.SyntaxEnvelope
+namespace NETMetaCoder.Core.SyntaxEnvelope
 {
     /// <summary>
     /// An interface to denote that a syntax envelope also has an index property.

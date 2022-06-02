@@ -1,50 +1,50 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>NETMetaCoder</name>
+        <name>NETMetaCoder.Core</name>
     </assembly>
     <members>
-        <member name="T:NETMetaCoder.CodeTransformationResult">
+        <member name="T:NETMetaCoder.Core.CodeTransformationResult">
             <summary>
             The result of making a code transformation pass through a compilation unit.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.CodeTransformationResult.TransformationOccured">
+        <member name="P:NETMetaCoder.Core.CodeTransformationResult.TransformationOccured">
             <summary>
             True is the code in the processed compilation unit was transformed.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.CodeTransformationResult.MirrorFilePath">
+        <member name="P:NETMetaCoder.Core.CodeTransformationResult.MirrorFilePath">
             <summary>
             The file path to the rewritten code file, which holds the original code of the compilation unit.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.CodeTransformationResult.CompanionFilePath">
+        <member name="P:NETMetaCoder.Core.CodeTransformationResult.CompanionFilePath">
             <summary>
             The file path to the companion code file, which holds the newly produced code, that serves as a proxy to the
             functionality of the compilation unit.
             </summary>
         </member>
-        <member name="T:NETMetaCoder.CodeTransformer">
+        <member name="T:NETMetaCoder.Core.CodeTransformer">
              <summary>
              This class provides the core functionality of the library.
             
-             It's focal point is method <see cref="M:NETMetaCoder.CodeTransformer.Wrap(System.String)"/> which is responsible for running the code wrapping logic for a
+             It's focal point is method <see cref="M:NETMetaCoder.Core.CodeTransformer.Wrap(System.String)"/> which is responsible for running the code wrapping logic for a
              compilation unit.
              </summary>
-             <seealso cref="T:NETMetaCoder.CodeWrapTransformationOptions"/>
-             <seealso cref="T:NETMetaCoder.SyntaxScanner"/>
-             <seealso cref="T:NETMetaCoder.SyntaxRewriter"/>
+             <seealso cref="T:NETMetaCoder.Core.CodeWrapTransformationOptions"/>
+             <seealso cref="T:NETMetaCoder.Core.SyntaxScanner"/>
+             <seealso cref="T:NETMetaCoder.Core.SyntaxRewriter"/>
         </member>
-        <member name="M:NETMetaCoder.CodeTransformer.#ctor(NETMetaCoder.CodeWrapTransformationOptions,System.Boolean)">
+        <member name="M:NETMetaCoder.Core.CodeTransformer.#ctor(NETMetaCoder.Core.CodeWrapTransformationOptions,System.Boolean)">
             <summary>
-            Creates a new <see cref="T:NETMetaCoder.CodeTransformer"/> instance.
+            Creates a new <see cref="T:NETMetaCoder.Core.CodeTransformer"/> instance.
             </summary>
             <param name="options"></param>
             <param name="writeOutput"></param>
-            <seealso cref="T:NETMetaCoder.CodeWrapTransformationOptions"/>
+            <seealso cref="T:NETMetaCoder.Core.CodeWrapTransformationOptions"/>
         </member>
-        <member name="M:NETMetaCoder.CodeTransformer.Wrap(System.String)">
+        <member name="M:NETMetaCoder.Core.CodeTransformer.Wrap(System.String)">
             <summary>
             This function receives a file path and potentially produces a code syntax transformation of that file's
             code.
@@ -53,24 +53,24 @@
             <remarks>
             This method takes the following steps:
             1. Is parses its syntax tree.
-            2. It scans the parsed syntax tree into a <see cref="N:NETMetaCoder.SyntaxEnvelope"/>, keeping only the parts relevant to
+            2. It scans the parsed syntax tree into a <see cref="N:NETMetaCoder.Core.SyntaxEnvelope"/>, keeping only the parts relevant to
               the functionality of this library.
             3. If the file needs to be rewritten, then the original file is changed so that its code can be wrapped and
               companion file with the wrapping code is created.
             </remarks>
-            <seealso cref="T:NETMetaCoder.SyntaxScanner"/>
-            <seealso cref="T:NETMetaCoder.SyntaxRewriter"/>
+            <seealso cref="T:NETMetaCoder.Core.SyntaxScanner"/>
+            <seealso cref="T:NETMetaCoder.Core.SyntaxRewriter"/>
         </member>
-        <member name="T:NETMetaCoder.CodeWrapTransformationOptions">
+        <member name="T:NETMetaCoder.Core.CodeWrapTransformationOptions">
             <summary>
-            This type represents the options passed to <see cref="T:NETMetaCoder.CodeTransformer"/>, in order to process a compilation
+            This type represents the options passed to <see cref="T:NETMetaCoder.Core.CodeTransformer"/>, in order to process a compilation
             unit.
             </summary>
-            <seealso cref="T:NETMetaCoder.CodeTransformer"/>
+            <seealso cref="T:NETMetaCoder.Core.CodeTransformer"/>
         </member>
-        <member name="M:NETMetaCoder.CodeWrapTransformationOptions.#ctor(System.String,System.String,System.String,System.Collections.Immutable.IImmutableDictionary{NETMetaCoder.Abstractions.AttributeDescriptor,System.ValueTuple{Microsoft.CodeAnalysis.SyntaxList{Microsoft.CodeAnalysis.CSharp.Syntax.UsingDirectiveSyntax},NETMetaCoder.Abstractions.PropertySyntaxGenerator,System.Collections.Immutable.IImmutableList{NETMetaCoder.Abstractions.SyntaxWrapper}}},System.String)">
+        <member name="M:NETMetaCoder.Core.CodeWrapTransformationOptions.#ctor(System.String,System.String,System.String,System.Collections.Immutable.IImmutableDictionary{NETMetaCoder.Abstractions.AttributeDescriptor,System.ValueTuple{Microsoft.CodeAnalysis.SyntaxList{Microsoft.CodeAnalysis.CSharp.Syntax.UsingDirectiveSyntax},NETMetaCoder.Abstractions.PropertySyntaxGenerator,System.Collections.Immutable.IImmutableList{NETMetaCoder.Abstractions.SyntaxWrapper}}},System.String)">
             <summary>
-            Constructs a new <see cref="T:NETMetaCoder.CodeWrapTransformationOptions"/> instance.
+            Constructs a new <see cref="T:NETMetaCoder.Core.CodeWrapTransformationOptions"/> instance.
             </summary>
             <param name="fileBasePath"></param>
             <param name="outputBasePath"></param>
@@ -78,41 +78,41 @@
             <param name="syntaxPerAttribute"></param>
             <param name="eol"></param>
         </member>
-        <member name="P:NETMetaCoder.CodeWrapTransformationOptions.OutputBasePath">
+        <member name="P:NETMetaCoder.Core.CodeWrapTransformationOptions.OutputBasePath">
             <summary>
-            The path to a directory where the <see cref="P:NETMetaCoder.CodeWrapTransformationOptions.OutputDirectoryName"/> directory will be created and the output
-            of <see cref="M:NETMetaCoder.CodeTransformer.Wrap(System.String)"/> will be stored.
+            The path to a directory where the <see cref="P:NETMetaCoder.Core.CodeWrapTransformationOptions.OutputDirectoryName"/> directory will be created and the output
+            of <see cref="M:NETMetaCoder.Core.CodeTransformer.Wrap(System.String)"/> will be stored.
             </summary>
-            <seealso cref="P:NETMetaCoder.CodeWrapTransformationOptions.OutputDirectoryName"/>
+            <seealso cref="P:NETMetaCoder.Core.CodeWrapTransformationOptions.OutputDirectoryName"/>
         </member>
-        <member name="P:NETMetaCoder.CodeWrapTransformationOptions.OutputDirectoryName">
+        <member name="P:NETMetaCoder.Core.CodeWrapTransformationOptions.OutputDirectoryName">
             <summary>
-            The name of the directory in <see cref="P:NETMetaCoder.CodeWrapTransformationOptions.OutputBasePath"/>, where the output of
-            <see cref="M:NETMetaCoder.CodeTransformer.Wrap(System.String)"/> will be stored.
+            The name of the directory in <see cref="P:NETMetaCoder.Core.CodeWrapTransformationOptions.OutputBasePath"/>, where the output of
+            <see cref="M:NETMetaCoder.Core.CodeTransformer.Wrap(System.String)"/> will be stored.
             </summary>
-            <seealso cref="P:NETMetaCoder.CodeWrapTransformationOptions.OutputBasePath"/>
+            <seealso cref="P:NETMetaCoder.Core.CodeWrapTransformationOptions.OutputBasePath"/>
         </member>
-        <member name="P:NETMetaCoder.CodeWrapTransformationOptions.FileBasePath">
+        <member name="P:NETMetaCoder.Core.CodeWrapTransformationOptions.FileBasePath">
             <summary>
             The path to the directory where the search for <c>*.cs</c> files will be made.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.CodeWrapTransformationOptions.EndOfLine">
+        <member name="P:NETMetaCoder.Core.CodeWrapTransformationOptions.EndOfLine">
             <summary>
             The EOL character sequence to use for the generated code files.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.CodeWrapTransformationOptions.AttributeNames">
+        <member name="P:NETMetaCoder.Core.CodeWrapTransformationOptions.AttributeNames">
             <summary>
             The names of the targeted attributes which will cause a compilation unit to be rewritten.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.CodeWrapTransformationOptions.Usings">
+        <member name="P:NETMetaCoder.Core.CodeWrapTransformationOptions.Usings">
             <summary>
             The using declarations to write in the rewritten compilation unit.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.CodeWrapTransformationOptions.PropertySyntaxGenerators">
+        <member name="P:NETMetaCoder.Core.CodeWrapTransformationOptions.PropertySyntaxGenerators">
              <summary>
              Anonymous functions, keyed by an attribute name, that produce property declaration syntax nodes.
             
@@ -120,90 +120,90 @@
              </summary>
              <seealso cref="T:NETMetaCoder.Abstractions.PropertySyntaxGenerator"/>
         </member>
-        <member name="P:NETMetaCoder.CodeWrapTransformationOptions.PreExpressionMappers">
+        <member name="P:NETMetaCoder.Core.CodeWrapTransformationOptions.PreExpressionMappers">
              <summary>
              Anonymous functions, keyed by an attribute name, that produce the new syntax with which a method is wrapped.
              </summary>
              <remarks>
              The syntax produced by these is place before the call to the wrapped method.
             
-             Together with <see cref="P:NETMetaCoder.CodeWrapTransformationOptions.PostExpressionMappers"/>, they wrap the call to the wrapped method.
+             Together with <see cref="P:NETMetaCoder.Core.CodeWrapTransformationOptions.PostExpressionMappers"/>, they wrap the call to the wrapped method.
              </remarks>
              <seealso cref="T:NETMetaCoder.Abstractions.MethodSyntaxGenerator"/>
         </member>
-        <member name="P:NETMetaCoder.CodeWrapTransformationOptions.PostExpressionMappers">
+        <member name="P:NETMetaCoder.Core.CodeWrapTransformationOptions.PostExpressionMappers">
              <summary>
              Anonymous functions, keyed by an attribute name, that produce the new syntax with which a method is wrapped.
              </summary>
              <remarks>
              The syntax produced by these is place after the call to the wrapped method.
             
-             Together with <see cref="P:NETMetaCoder.CodeWrapTransformationOptions.PreExpressionMappers"/>, they wrap the call to the wrapped method.
+             Together with <see cref="P:NETMetaCoder.Core.CodeWrapTransformationOptions.PreExpressionMappers"/>, they wrap the call to the wrapped method.
              </remarks>
              <seealso cref="T:NETMetaCoder.Abstractions.MethodSyntaxGenerator"/>
         </member>
-        <member name="P:NETMetaCoder.CodeWrapTransformationOptions.OutputDirectory">
+        <member name="P:NETMetaCoder.Core.CodeWrapTransformationOptions.OutputDirectory">
             <summary>
-            The path to a directory, as a combination of <see cref="P:NETMetaCoder.CodeWrapTransformationOptions.OutputBasePath"/> and
-            <see cref="P:NETMetaCoder.CodeWrapTransformationOptions.OutputDirectoryName"/>, where the rewritten code files will be stored.
+            The path to a directory, as a combination of <see cref="P:NETMetaCoder.Core.CodeWrapTransformationOptions.OutputBasePath"/> and
+            <see cref="P:NETMetaCoder.Core.CodeWrapTransformationOptions.OutputDirectoryName"/>, where the rewritten code files will be stored.
             </summary>
         </member>
-        <member name="M:NETMetaCoder.CodeWrapTransformationOptions.SelectUsings(System.Collections.Immutable.ImmutableHashSet{System.String})">
+        <member name="M:NETMetaCoder.Core.CodeWrapTransformationOptions.SelectUsings(System.Collections.Immutable.ImmutableHashSet{System.String})">
             <summary>
-            Selects using declaration syntax nodes from <see cref="P:NETMetaCoder.CodeWrapTransformationOptions.Usings"/>, based on a list of attribute names.
+            Selects using declaration syntax nodes from <see cref="P:NETMetaCoder.Core.CodeWrapTransformationOptions.Usings"/>, based on a list of attribute names.
             </summary>
             <param name="attributeNames"></param>
         </member>
-        <member name="M:NETMetaCoder.CodeWrapTransformationOptions.SelectPropertySyntaxGenerators(System.Collections.Immutable.ImmutableHashSet{System.String})">
+        <member name="M:NETMetaCoder.Core.CodeWrapTransformationOptions.SelectPropertySyntaxGenerators(System.Collections.Immutable.ImmutableHashSet{System.String})">
             <summary>
-            Selects property declaration generators from <see cref="P:NETMetaCoder.CodeWrapTransformationOptions.PropertySyntaxGenerators"/>, based on a list of
+            Selects property declaration generators from <see cref="P:NETMetaCoder.Core.CodeWrapTransformationOptions.PropertySyntaxGenerators"/>, based on a list of
             attribute names.
             </summary>
             <param name="attributeNames"></param>
         </member>
-        <member name="M:NETMetaCoder.CodeWrapTransformationOptions.SelectPreExpressionMappers(System.Collections.Immutable.ImmutableHashSet{System.String})">
+        <member name="M:NETMetaCoder.Core.CodeWrapTransformationOptions.SelectPreExpressionMappers(System.Collections.Immutable.ImmutableHashSet{System.String})">
             <summary>
-            Selects expression syntax fragments from <see cref="P:NETMetaCoder.CodeWrapTransformationOptions.PreExpressionMappers"/>, based on a list of attribute
+            Selects expression syntax fragments from <see cref="P:NETMetaCoder.Core.CodeWrapTransformationOptions.PreExpressionMappers"/>, based on a list of attribute
             names.
             </summary>
             <param name="attributeNames"></param>
         </member>
-        <member name="M:NETMetaCoder.CodeWrapTransformationOptions.SelectPostExpressionMappers(System.Collections.Immutable.ImmutableHashSet{System.String})">
+        <member name="M:NETMetaCoder.Core.CodeWrapTransformationOptions.SelectPostExpressionMappers(System.Collections.Immutable.ImmutableHashSet{System.String})">
             <summary>
-            Selects expression syntax fragments from <see cref="P:NETMetaCoder.CodeWrapTransformationOptions.PostExpressionMappers"/>, based on a list of attribute
+            Selects expression syntax fragments from <see cref="P:NETMetaCoder.Core.CodeWrapTransformationOptions.PostExpressionMappers"/>, based on a list of attribute
             names.
             </summary>
             <param name="attributeNames"></param>
         </member>
-        <member name="T:NETMetaCoder.Debug">
+        <member name="T:NETMetaCoder.Core.Debug">
             <summary>
             Provides utilities meant only as a debugging tool, during development.
             </summary>
         </member>
-        <member name="M:NETMetaCoder.Debug.Print(NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope)">
+        <member name="M:NETMetaCoder.Core.Debug.Print(NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope)">
             <summary>
-            Pretty prints a <see cref="N:NETMetaCoder.SyntaxEnvelope"/>.
+            Pretty prints a <see cref="N:NETMetaCoder.Core.SyntaxEnvelope"/>.
             </summary>
             <param name="result"></param>
         </member>
-        <member name="T:NETMetaCoder.PathHelper">
+        <member name="T:NETMetaCoder.Core.PathHelper">
             <summary>
             A helper class for manipulating file paths.
             </summary>
         </member>
-        <member name="M:NETMetaCoder.PathHelper.GetRelativePath(System.String,System.String)">
+        <member name="M:NETMetaCoder.Core.PathHelper.GetRelativePath(System.String,System.String)">
             <summary>
             Get the path to a file, relative to another path.
             </summary>
             <param name="relativeTo"></param>
             <param name="path"></param>
         </member>
-        <member name="T:NETMetaCoder.StringExtensions">
+        <member name="T:NETMetaCoder.Core.StringExtensions">
             <summary>
             Extension methods for <see cref="T:System.String"/>, relevant to the requirements of this library.
             </summary>
         </member>
-        <member name="M:NETMetaCoder.StringExtensions.ToAttributeNameNeedle(System.String)">
+        <member name="M:NETMetaCoder.Core.StringExtensions.ToAttributeNameNeedle(System.String)">
             <summary>
             Transforms an attribute name so as to append it to a wrapped method's name.
             </summary>
@@ -211,39 +211,39 @@
             <returns></returns>
             <exception cref="T:System.ArgumentException"></exception>
         </member>
-        <member name="T:NETMetaCoder.SyntaxBuilder">
+        <member name="T:NETMetaCoder.Core.SyntaxBuilder">
             <summary>
             This type produces the syntax that wraps method calls in a compilation unit, based on a
-            <see cref="N:NETMetaCoder.SyntaxEnvelope"/>.
+            <see cref="N:NETMetaCoder.Core.SyntaxEnvelope"/>.
             </summary>
         </member>
-        <member name="M:NETMetaCoder.SyntaxBuilder.#ctor(NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope,NETMetaCoder.CodeWrapTransformationOptions@)">
+        <member name="M:NETMetaCoder.Core.SyntaxBuilder.#ctor(NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope,NETMetaCoder.Core.CodeWrapTransformationOptions@)">
             <summary>
-            Constructs a new <see cref="T:NETMetaCoder.SyntaxBuilder"/> instance.
+            Constructs a new <see cref="T:NETMetaCoder.Core.SyntaxBuilder"/> instance.
             </summary>
             <param name="syntaxEnvelope"></param>
             <param name="options"></param>
         </member>
-        <member name="M:NETMetaCoder.SyntaxBuilder.Build">
+        <member name="M:NETMetaCoder.Core.SyntaxBuilder.Build">
             <summary>
             This method builds the syntax tree which wraps method calls in a compilation unit.
             </summary>
             <remarks>
             The steps taken by this method are:
             1. It instantiates a new syntax tree, which is an instance of <see cref="T:Microsoft.CodeAnalysis.CSharp.Syntax.CompilationUnitSyntax"/>, and it
-              traverses the syntax tree held by a <see cref="N:NETMetaCoder.SyntaxEnvelope"/>.
+              traverses the syntax tree held by a <see cref="N:NETMetaCoder.Core.SyntaxEnvelope"/>.
             2. For each namespace, class and struct syntax node, it produces the relevant declaration syntax.
-            3. In the case when the <see cref="N:NETMetaCoder.SyntaxEnvelope"/> traversal reaches a method declaration, then the syntax
+            3. In the case when the <see cref="N:NETMetaCoder.Core.SyntaxEnvelope"/> traversal reaches a method declaration, then the syntax
               that is produced wraps a call to the original method, using the syntax generators in
-            <see cref="T:NETMetaCoder.CodeWrapTransformationOptions"/>.
+            <see cref="T:NETMetaCoder.Core.CodeWrapTransformationOptions"/>.
             </remarks>
         </member>
-        <member name="T:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope">
-            <inheritdoc cref="T:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase"/>
+        <member name="T:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope">
+            <inheritdoc cref="T:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase"/>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.#ctor(Microsoft.CodeAnalysis.CSharp.Syntax.ClassDeclarationSyntax,System.UInt16)">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.#ctor(Microsoft.CodeAnalysis.CSharp.Syntax.ClassDeclarationSyntax,System.UInt16)">
             <summary>
-            Constructs an instance of <see cref="T:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/> to hold an instance of
+            Constructs an instance of <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/> to hold an instance of
             <see cref="T:Microsoft.CodeAnalysis.CSharp.Syntax.ClassDeclarationSyntax"/>, along with a sub tree of its descendant nodes..
             </summary>
             <param name="syntax">
@@ -253,9 +253,9 @@
             A unique index for the syntax node, in order to identify it again in a later pass.
             </param>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.#ctor(Microsoft.CodeAnalysis.CSharp.Syntax.StructDeclarationSyntax,System.UInt16)">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.#ctor(Microsoft.CodeAnalysis.CSharp.Syntax.StructDeclarationSyntax,System.UInt16)">
             <summary>
-            Constructs an instance of <see cref="T:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/> to hold an instance of
+            Constructs an instance of <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/> to hold an instance of
             <see cref="T:Microsoft.CodeAnalysis.CSharp.Syntax.StructDeclarationSyntax"/>.
             </summary>
             <param name="syntax">
@@ -264,23 +264,23 @@
             <param name="nodeIndex">
             A unique index for the syntax node, in order to identify it again in a later pass.
             </param>
-            <seealso cref="P:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.NodeIndex"/>
+            <seealso cref="P:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.NodeIndex"/>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.DeclarationSyntax">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.DeclarationSyntax">
             <summary>
-            The declaration syntax of the class or struct that this <see cref="T:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/> refers to.
+            The declaration syntax of the class or struct that this <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/> refers to.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.MethodSyntaxEnvelopes">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.MethodSyntaxEnvelopes">
             <summary>
             The method syntax nodes that are direct children of the class or struct syntax node, held by an instance of
-            <see cref="T:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/>.
+            <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/>.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.NodeIndex">
-            <inheritdoc cref="P:NETMetaCoder.SyntaxEnvelope.IIndexedSyntaxEnvelope.NodeIndex"/>
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.NodeIndex">
+            <inheritdoc cref="P:NETMetaCoder.Core.SyntaxEnvelope.IIndexedSyntaxEnvelope.NodeIndex"/>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.AddMethodSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax,System.UInt16,System.Collections.Immutable.ImmutableHashSet{System.String},Microsoft.CodeAnalysis.CSharp.Syntax.AttributeSyntax)">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.AddMethodSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax,System.UInt16,System.Collections.Immutable.ImmutableHashSet{System.String},Microsoft.CodeAnalysis.CSharp.Syntax.AttributeSyntax)">
             <summary>
             Adds a method declaration syntax node to the envelope.
             </summary>
@@ -294,40 +294,40 @@
             </param>
             <returns>
             It returns a new envelope, which is a child of the envelope instance in the context of which,
-            <see cref="M:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.AddMethodSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax,System.UInt16,System.Collections.Immutable.ImmutableHashSet{System.String},Microsoft.CodeAnalysis.CSharp.Syntax.AttributeSyntax)"/> was called (ie, it returns the next level in the tree of syntax nodes).
+            <see cref="M:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope.AddMethodSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax,System.UInt16,System.Collections.Immutable.ImmutableHashSet{System.String},Microsoft.CodeAnalysis.CSharp.Syntax.AttributeSyntax)"/> was called (ie, it returns the next level in the tree of syntax nodes).
             </returns>
-            <seealso cref="T:NETMetaCoder.SyntaxEnvelope.MethodSyntaxEnvelope"/>
+            <seealso cref="T:NETMetaCoder.Core.SyntaxEnvelope.MethodSyntaxEnvelope"/>
         </member>
-        <member name="T:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase">
+        <member name="T:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase">
             <summary>
             A type that holds the syntax elements found in a class or struct declaration.
             </summary>
-            <seealso cref="T:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope"/>
+            <seealso cref="T:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope"/>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.ClassDeclarationSyntax">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.ClassDeclarationSyntax">
             <summary>
-            The <see cref="P:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.ClassDeclarationSyntax"/> held inside the <see cref="T:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/> instance.
+            The <see cref="P:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.ClassDeclarationSyntax"/> held inside the <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/> instance.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.StructDeclarationSyntax">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.StructDeclarationSyntax">
             <summary>
-            The <see cref="P:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.StructDeclarationSyntax"/> held inside the <see cref="T:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/>
+            The <see cref="P:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.StructDeclarationSyntax"/> held inside the <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/>
             instance.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.IsClassDeclarationSyntax">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.IsClassDeclarationSyntax">
             <summary>
-            Returns <c>true</c> if this <see cref="T:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/> instance holds a
-            <see cref="P:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.ClassDeclarationSyntax"/> and <c>false</c> otherwise.
+            Returns <c>true</c> if this <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/> instance holds a
+            <see cref="P:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.ClassDeclarationSyntax"/> and <c>false</c> otherwise.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.ClassOrStructSyntaxEnvelopes">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.ClassOrStructSyntaxEnvelopes">
             <summary>
             The class and struct syntax nodes that are direct children of the class or struct syntax node, held by an
-            instance of <see cref="T:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/>.
+            instance of <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/>.
             </summary>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.AddClassSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.ClassDeclarationSyntax,System.UInt16)">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.AddClassSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.ClassDeclarationSyntax,System.UInt16)">
             <summary>
             Adds a class declaration syntax node to the envelope.
             </summary>
@@ -335,10 +335,10 @@
             <param name="nodeIndex"></param>
             <returns>
             It returns a new envelope, which is a child of the envelope instance in the context of which,
-            <see cref="M:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.AddClassSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.ClassDeclarationSyntax,System.UInt16)"/> was called (ie, it returns the next level in the tree of syntax nodes).
+            <see cref="M:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.AddClassSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.ClassDeclarationSyntax,System.UInt16)"/> was called (ie, it returns the next level in the tree of syntax nodes).
             </returns>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.AddStructSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.StructDeclarationSyntax,System.UInt16)">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.AddStructSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.StructDeclarationSyntax,System.UInt16)">
             <summary>
             Adds a struct declaration syntax node to the envelope.
             </summary>
@@ -346,42 +346,42 @@
             <param name="nodeIndex"></param>
             <returns>
             It returns a new envelope, which is a child of the envelope instance in the context of which,
-            <see cref="M:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.AddStructSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.StructDeclarationSyntax,System.UInt16)"/> was called (ie, it returns the next level in the tree of syntax nodes).
+            <see cref="M:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.AddStructSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.StructDeclarationSyntax,System.UInt16)"/> was called (ie, it returns the next level in the tree of syntax nodes).
             </returns>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.Prune">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelopeBase.Prune">
             <summary>
-            Prunes the syntax node tree rooted at an instance of <see cref="T:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/> from empty
+            Prunes the syntax node tree rooted at an instance of <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/> from empty
             children envelopes.
             </summary>
         </member>
-        <member name="T:NETMetaCoder.SyntaxEnvelope.IIndexedSyntaxEnvelope">
+        <member name="T:NETMetaCoder.Core.SyntaxEnvelope.IIndexedSyntaxEnvelope">
             <summary>
             An interface to denote that a syntax envelope also has an index property.
             </summary>
-            <seealso cref="T:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope"/>
-            <seealso cref="T:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelope"/>
-            <seealso cref="T:NETMetaCoder.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/>
-            <seealso cref="T:NETMetaCoder.SyntaxEnvelope.MethodSyntaxEnvelope"/>
+            <seealso cref="T:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope"/>
+            <seealso cref="T:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelope"/>
+            <seealso cref="T:NETMetaCoder.Core.SyntaxEnvelope.ClassOrStructSyntaxEnvelope"/>
+            <seealso cref="T:NETMetaCoder.Core.SyntaxEnvelope.MethodSyntaxEnvelope"/>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.IIndexedSyntaxEnvelope.NodeIndex">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.IIndexedSyntaxEnvelope.NodeIndex">
              <summary>
              An index to be used when scanning a compilation unit, in order to build a tree of the unit's structure.
             
              This index gives an identity to a specific syntax node within the built tree.
              </summary>
-             <seealso cref="T:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope"/>
+             <seealso cref="T:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope"/>
         </member>
-        <member name="T:NETMetaCoder.SyntaxEnvelope.MethodSyntaxEnvelope">
+        <member name="T:NETMetaCoder.Core.SyntaxEnvelope.MethodSyntaxEnvelope">
             <summary>
             A type that holds the syntax elements found in a method declaration.
             </summary>
-            <seealso cref="T:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope"/>
+            <seealso cref="T:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope"/>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.MethodSyntaxEnvelope.#ctor(Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax,System.UInt16,System.Collections.Immutable.ImmutableHashSet{System.String},Microsoft.CodeAnalysis.CSharp.Syntax.AttributeSyntax)">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.MethodSyntaxEnvelope.#ctor(Microsoft.CodeAnalysis.CSharp.Syntax.MethodDeclarationSyntax,System.UInt16,System.Collections.Immutable.ImmutableHashSet{System.String},Microsoft.CodeAnalysis.CSharp.Syntax.AttributeSyntax)">
             <summary>
-            Constructs an instance of <see cref="T:NETMetaCoder.SyntaxEnvelope.MethodSyntaxEnvelope"/> to hold an instance of
-            <see cref="P:NETMetaCoder.SyntaxEnvelope.MethodSyntaxEnvelope.MethodDeclarationSyntax"/>.
+            Constructs an instance of <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.MethodSyntaxEnvelope"/> to hold an instance of
+            <see cref="P:NETMetaCoder.Core.SyntaxEnvelope.MethodSyntaxEnvelope.MethodDeclarationSyntax"/>.
             </summary>
             <param name="syntax">
             The class declaration syntax.
@@ -396,30 +396,30 @@
             The syntax node for the <see cref="T:System.ObsoleteAttribute"/> found on the method declaration, if any.
             </param>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.MethodSyntaxEnvelope.MethodDeclarationSyntax">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.MethodSyntaxEnvelope.MethodDeclarationSyntax">
             <summary>
-            The <see cref="P:NETMetaCoder.SyntaxEnvelope.MethodSyntaxEnvelope.MethodDeclarationSyntax"/> held inside the <see cref="T:NETMetaCoder.SyntaxEnvelope.MethodSyntaxEnvelope"/> instance.
+            The <see cref="P:NETMetaCoder.Core.SyntaxEnvelope.MethodSyntaxEnvelope.MethodDeclarationSyntax"/> held inside the <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.MethodSyntaxEnvelope"/> instance.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.MethodSyntaxEnvelope.AttributeNamesFound">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.MethodSyntaxEnvelope.AttributeNamesFound">
             <summary>
             The names of the attributes found on the method declaration.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.MethodSyntaxEnvelope.MethodObsoletion">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.MethodSyntaxEnvelope.MethodObsoletion">
             <summary>
             The syntax node for the <see cref="T:System.ObsoleteAttribute"/> found on the method declaration, if any.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.MethodSyntaxEnvelope.NodeIndex">
-            <inheritdoc cref="P:NETMetaCoder.SyntaxEnvelope.IIndexedSyntaxEnvelope.NodeIndex"/>
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.MethodSyntaxEnvelope.NodeIndex">
+            <inheritdoc cref="P:NETMetaCoder.Core.SyntaxEnvelope.IIndexedSyntaxEnvelope.NodeIndex"/>
         </member>
-        <member name="T:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelope">
-            <inheritdoc cref="T:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase"/>
+        <member name="T:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelope">
+            <inheritdoc cref="T:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase"/>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelope.#ctor(Microsoft.CodeAnalysis.CSharp.Syntax.NamespaceDeclarationSyntax,System.UInt16)">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelope.#ctor(Microsoft.CodeAnalysis.CSharp.Syntax.NamespaceDeclarationSyntax,System.UInt16)">
             <summary>
-            Constructs an instance of <see cref="T:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelope"/> to hold an instance of
+            Constructs an instance of <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelope"/> to hold an instance of
             <see cref="T:Microsoft.CodeAnalysis.CSharp.Syntax.NamespaceDeclarationSyntax"/>, along with a sub tree of its descendant nodes.
             </summary>
             <param name="syntax">
@@ -429,27 +429,27 @@
             A unique index for the syntax node, in order to identify it again in a later pass.
             </param>
         </member>
-        <member name="T:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase">
+        <member name="T:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase">
             <summary>
             A type that holds the syntax elements found in a namespace declaration.
             </summary>
-            <seealso cref="T:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope"/>
+            <seealso cref="T:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope"/>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.NamespaceDeclarationSyntax">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.NamespaceDeclarationSyntax">
             <summary>
-            The <see cref="P:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.NamespaceDeclarationSyntax"/> held inside the <see cref="T:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelope"/> instance.
+            The <see cref="P:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.NamespaceDeclarationSyntax"/> held inside the <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelope"/> instance.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.NamespaceSyntaxEnvelopes">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.NamespaceSyntaxEnvelopes">
             <summary>
             The namespace syntax nodes that are direct children of the namespace syntax node, held by an instance of
-            <see cref="T:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelope"/>.
+            <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelope"/>.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.NodeIndex">
-            <inheritdoc cref="P:NETMetaCoder.SyntaxEnvelope.IIndexedSyntaxEnvelope.NodeIndex"/>
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.NodeIndex">
+            <inheritdoc cref="P:NETMetaCoder.Core.SyntaxEnvelope.IIndexedSyntaxEnvelope.NodeIndex"/>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.AddNamespaceSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.NamespaceDeclarationSyntax,System.UInt16)">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.AddNamespaceSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.NamespaceDeclarationSyntax,System.UInt16)">
             <summary>
             Adds a namespace declaration syntax node to the envelope.
             </summary>
@@ -457,16 +457,16 @@
             <param name="nodeIndex"></param>
             <returns>
             It returns a new envelope, which is a child of the envelope instance in the context of which,
-            <see cref="M:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.AddNamespaceSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.NamespaceDeclarationSyntax,System.UInt16)"/> was called (ie, it returns the next level in the tree of syntax nodes).
+            <see cref="M:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.AddNamespaceSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.NamespaceDeclarationSyntax,System.UInt16)"/> was called (ie, it returns the next level in the tree of syntax nodes).
             </returns>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.Prune">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelopeBase.Prune">
             <summary>
-            Prunes the syntax node tree rooted at an instance of <see cref="T:NETMetaCoder.SyntaxEnvelope.NamespaceSyntaxEnvelope"/> from empty
+            Prunes the syntax node tree rooted at an instance of <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.NamespaceSyntaxEnvelope"/> from empty
             children envelopes.
             </summary>
         </member>
-        <member name="T:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope">
+        <member name="T:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope">
              <summary>
              A type that holds a syntax tree for a compilation unit.
             
@@ -475,34 +475,34 @@
              Namely, this library needs only an hierarchy of namespaces, classes, structs and methods.
              </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope.Usings">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope.Usings">
             <summary>
             The using declaration syntax nodes that are used in the compilation unit, held by an instance of
-            <see cref="T:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope"/>.
+            <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope"/>.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope.AttributeNamesFound">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope.AttributeNamesFound">
             <summary>
             A set of attribute names found, on method declarations, throughout the compilation unit's syntax tree.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope.HasSyntaxToRender">
+        <member name="P:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope.HasSyntaxToRender">
             <summary>
             Returns true if there are any namespace, class or struct declarations in a compilation unit.
             </summary>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope.AddUsingDirectiveSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.UsingDirectiveSyntax)">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope.AddUsingDirectiveSyntax(Microsoft.CodeAnalysis.CSharp.Syntax.UsingDirectiveSyntax)">
             <summary>
             Adds a using declaration syntax node to the envelope.
             </summary>
             <param name="syntax"></param>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope.AddAttributeNameFound(System.String)">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope.AddAttributeNameFound(System.String)">
             <summary>
             Adds a found attribute's name to the envelope.
             </summary>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope.GatherNodeIndices">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope.GatherNodeIndices">
              <summary>
              Gathers the syntax node indices of the whole tree so that the returned <see cref="T:System.Collections.Generic.HashSet`1"/> can serve as
              an index of seen syntax nodes.
@@ -511,50 +511,50 @@
              </summary>
              <returns></returns>
         </member>
-        <member name="M:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope.Prune">
+        <member name="M:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope.Prune">
             <summary>
-            Prunes the syntax node tree rooted at an instance of <see cref="T:NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope"/> from empty children
+            Prunes the syntax node tree rooted at an instance of <see cref="T:NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope"/> from empty children
             envelopes.
             </summary>
         </member>
-        <member name="T:NETMetaCoder.SyntaxRewriter">
+        <member name="T:NETMetaCoder.Core.SyntaxRewriter">
             <summary>
             This type is responsible for rewriting a compilation unit's syntax.
             </summary>
         </member>
-        <member name="M:NETMetaCoder.SyntaxRewriter.RewriteSyntaxTree(Microsoft.CodeAnalysis.SyntaxTree,System.Collections.Generic.IEnumerable{System.String},NETMetaCoder.SyntaxEnvelope.SyntaxEnvelope)">
+        <member name="M:NETMetaCoder.Core.SyntaxRewriter.RewriteSyntaxTree(Microsoft.CodeAnalysis.SyntaxTree,System.Collections.Generic.IEnumerable{System.String},NETMetaCoder.Core.SyntaxEnvelope.SyntaxEnvelope)">
             <summary>
-            Constructs a new <see cref="T:NETMetaCoder.SyntaxRewriter"/> instance.
+            Constructs a new <see cref="T:NETMetaCoder.Core.SyntaxRewriter"/> instance.
             </summary>
             <param name="tree"></param>
             <param name="attributeNames"></param>
             <param name="syntaxEnvelope"></param>
             <returns></returns>
         </member>
-        <member name="T:NETMetaCoder.SyntaxRewriteResult">
+        <member name="T:NETMetaCoder.Core.SyntaxRewriteResult">
             <summary>
-            Represents the result of an invocation of <see cref="T:NETMetaCoder.SyntaxRewriter"/>.
+            Represents the result of an invocation of <see cref="T:NETMetaCoder.Core.SyntaxRewriter"/>.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxRewriteResult.SyntaxTree">
+        <member name="P:NETMetaCoder.Core.SyntaxRewriteResult.SyntaxTree">
             <summary>
             The potentially rewritten syntax tree of the processed compilation unit.
             </summary>
         </member>
-        <member name="P:NETMetaCoder.SyntaxRewriteResult.HasChanges">
+        <member name="P:NETMetaCoder.Core.SyntaxRewriteResult.HasChanges">
             <summary>
             If true, then a rewrite occured for the processed compilation unit.
             </summary>
         </member>
-        <member name="T:NETMetaCoder.SyntaxScanner">
+        <member name="T:NETMetaCoder.Core.SyntaxScanner">
             <summary>
-            This type encapsulates the logic for building a <see cref="N:NETMetaCoder.SyntaxEnvelope"/>, by scanning the syntax tree of a
+            This type encapsulates the logic for building a <see cref="N:NETMetaCoder.Core.SyntaxEnvelope"/>, by scanning the syntax tree of a
             compilation unit.
             </summary>
         </member>
-        <member name="M:NETMetaCoder.SyntaxScanner.ScanSyntaxTree(Microsoft.CodeAnalysis.SyntaxTree,System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:NETMetaCoder.Core.SyntaxScanner.ScanSyntaxTree(Microsoft.CodeAnalysis.SyntaxTree,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
-            Constructs a new <see cref="T:NETMetaCoder.SyntaxScanner"/> instance.
+            Constructs a new <see cref="T:NETMetaCoder.Core.SyntaxScanner"/> instance.
             </summary>
             <param name="tree"></param>
             <param name="attributeNames"></param>

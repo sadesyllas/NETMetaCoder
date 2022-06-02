@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -13,9 +14,18 @@ namespace NETMetaCoder.TestApp
         {
             Console.WriteLine("in cache init");
 
-            var pt = wrappedMethodInfo.GetParameters().Aggregate("", (acc, t) => $"{acc}, {t.ParameterType.Name}");
+            var guid1 = ((NETMetaCoderMarkerAttribute)wrapperMethodBase.GetCustomAttributes()
+                .First(a => a is NETMetaCoderMarkerAttribute)).Id;
+
+            var guid2 = ((NETMetaCoderMarkerAttribute)wrapperMethodBase.GetCustomAttributes()
+                .First(a => a is NETMetaCoderMarkerAttribute)).Id;
+
+            Debug.Assert(guid1 == guid2, "GUIDs do not match");
+
+            var pt = string.Join(", ", wrappedMethodInfo.GetParameters().Select(p => p.ParameterType.Name));
+
             Console.WriteLine(
-                $"async={wrappedMethodInfo.IsAsync()}, returnType={wrappedMethodInfo.ReturnType.Name}, " +
+                $"guid={guid1}, async={wrappedMethodInfo.IsAsync()}, returnType={wrappedMethodInfo.ReturnType.Name}, " +
                 $"methodName={wrappedMethodInfo.Name}, parameterTypes={pt}");
         }
 

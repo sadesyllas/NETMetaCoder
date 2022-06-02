@@ -8,44 +8,21 @@
 
     <PropertyGroup>
         <PackageId>NETMetaCoder.MSBuild</PackageId>
-        <Version>0.1.0-alpha.28</Version>
+        <Version>0.1.0-alpha.47</Version>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Build.Framework" Version="16.5.0">
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.5.0">
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.3">
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
+        <PackageReference Include="Microsoft.Build.Framework" Version="17.2.0"/>
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.2.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="AfterBuild\**" />
-        <None Remove=".gitignore" />
-        <None Remove="NETMetaCoder.MSBuild-template.targets" />
-        <None Update="NETMetaCoder.MSBuild.targets" Pack="true" PackagePath="build" Visible="false" />
+        <None Remove="NETMetaCoder.MSBuild.targets"/>
+        <Content Include="NETMetaCoder.MSBuild.targets" Pack="true" PackagePath="build" Visible="false" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\NETMetaCoder.Abstractions\NETMetaCoder.Abstractions.csproj" />
-        <ProjectReference Include="..\NETMetaCoder.SyntaxWrappers\NETMetaCoder.SyntaxWrappers.csproj" />
-        <ProjectReference Include="..\NETMetaCoder\NETMetaCoder.csproj" />
+        <ProjectReference Include="..\NETMetaCoder.Abstractions\NETMetaCoder.Abstractions.csproj"/>
     </ItemGroup>
-
-    <Target Name="GenerateTargetsFile" AfterTargets="AfterBuild">
-        <Message Importance="high" Text="Generating targets file 'NETMetaCoder.MSBuild.targets'." />
-
-        <PropertyGroup>
-            <AfterBuildProjectFilePath>$(MSBuildThisFileDirectory)AfterBuild</AfterBuildProjectFilePath>
-            <AfterBuildProjectFilePath>$(AfterBuildProjectFilePath)$([System.IO.Path]::DirectorySeparatorChar)</AfterBuildProjectFilePath>
-            <AfterBuildProjectFilePath>$(AfterBuildProjectFilePath)$([System.String]::Copy('$(MSBuildThisFile)').Replace('.csproj', '-AfterBuild.proj'))</AfterBuildProjectFilePath>
-        </PropertyGroup>
-
-        <MSBuild Projects="$(AfterBuildProjectFilePath)" Properties="ProjectRoot=$(MSBuildThisFileDirectory);PackageId=$(PackageId);Version=$(Version);TargetFramework=$(TargetFramework)" />
-    </Target>
 
 </Project>

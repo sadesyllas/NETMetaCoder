@@ -7,9 +7,10 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using NETMetaCoder.Abstractions;
-using NETMetaCoder.MSBuild;
-using NETMetaCoder.SyntaxWrappers;
+
+// using NETMetaCoder.Abstractions;
+// using NETMetaCoder.Core;
+// using NETMetaCoder.SyntaxWrappers;
 
 namespace NETMetaCoder.TestApp
 {
@@ -18,65 +19,71 @@ namespace NETMetaCoder.TestApp
         // ReSharper disable once UnusedParameter.Local
         static void Main(string[] args)
         {
-            const bool compile = true;
-
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (compile)
-            {
-                var projectRootPath = Directory.GetParent(Environment.CurrentDirectory).Parent!.Parent!.FullName;
-
-                var codeFilePaths = Directory.GetFiles(projectRootPath, "*.cs", SearchOption.AllDirectories)
-                    .Where(f => !f.Contains("/obj/")).ToArray();
-
-                var testCodeFilePaths = codeFilePaths.Where(codeFilePath => codeFilePath.EndsWith("TestClass.cs"))
-                    .ToArray();
-
-                var outputBasePath = Path.Combine(projectRootPath, "obj");
-
-                var wrappers = AttributesIndexReader.Read(projectRootPath).Select(attributeDescriptor =>
-                    {
-                        var wrapperType = SyntaxWrappersIndex.WrapperTypes[attributeDescriptor.WrapperType];
-
-                        return (attributeDescriptor, (
-                            wrapperType.Usings,
-                            wrapperType.PropertySyntaxGenerator,
-                            wrapperType.StatementWrappers));
-                    })
-                    .ToImmutableDictionary(
-                        kv =>
-                        {
-                            var (a, _) = kv;
-
-                            return a;
-                        },
-                        kv =>
-                        {
-                            var (_, b) = kv;
-
-                            return b;
-                        });
-
-                if (!wrappers.Any())
-                {
-                    throw new NETMetaCoderException(
-                        "[NETMetaCoder] No attributes found to wrap. Consider removing the reference to NETMetaCoder.");
-                }
-
-                var codeWrapTransformationOptions = new CodeWrapTransformationOptions(
-                    projectRootPath,
-                    outputBasePath,
-                    "NETMetaCoder",
-                    wrappers);
-
-                var codeTransformer = new CodeTransformer(codeWrapTransformationOptions);
-
-                foreach (var codeFilePath in testCodeFilePaths)
-                {
-                    var _ = codeTransformer.Wrap(codeFilePath);
-                }
-            }
-            else
-            {
+            // const bool compile = false;
+            //
+            // // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            // if (compile)
+            // {
+            
+            
+                // var projectRootPath = Directory.GetParent(Environment.CurrentDirectory).Parent!.Parent!.FullName;
+                //
+                // var codeFilePaths = Directory.GetFiles(projectRootPath, "*.cs", SearchOption.AllDirectories)
+                //     .Where(f => !f.Contains("/obj/")).ToArray();
+                //
+                // var testCodeFilePaths = codeFilePaths.Where(codeFilePath => codeFilePath.EndsWith("TestClass.cs"))
+                //     .ToArray();
+                //
+                // var outputBasePath = Path.Combine(projectRootPath, "obj");
+                //
+                // var wrappers = AttributesIndexReader.Read(projectRootPath).Select(attributeDescriptor =>
+                //     {
+                //         var wrapperType = SyntaxWrappersIndex.WrapperTypes[attributeDescriptor.WrapperType];
+                //
+                //         return (attributeDescriptor, (
+                //             wrapperType.Usings,
+                //             wrapperType.PropertySyntaxGenerator,
+                //             wrapperType.StatementWrappers));
+                //     })
+                //     .ToImmutableDictionary(
+                //         kv =>
+                //         {
+                //             var (a, _) = kv;
+                //
+                //             return a;
+                //         },
+                //         kv =>
+                //         {
+                //             var (_, b) = kv;
+                //
+                //             return b;
+                //         });
+                //
+                // if (!wrappers.Any())
+                // {
+                //     throw new NETMetaCoderException(
+                //         "[NETMetaCoder] No attributes found to wrap. Consider removing the reference to NETMetaCoder.");
+                // }
+                //
+                // var codeWrapTransformationOptions = new CodeWrapTransformationOptions(
+                //     projectRootPath,
+                //     outputBasePath,
+                //     "NETMetaCoder",
+                //     wrappers);
+                //
+                // var codeTransformer = new CodeTransformer(codeWrapTransformationOptions);
+                //
+                // foreach (var codeFilePath in testCodeFilePaths)
+                // {
+                //     var _ = codeTransformer.Wrap(codeFilePath);
+                // }
+                
+                
+            // }
+            // else
+            // {
+            
+            
                 var x = new Namespace1.Namespace1__Class2();
                 x.Namespace1__Class2__Method3(new Class1());
 
@@ -105,7 +112,9 @@ namespace NETMetaCoder.TestApp
                 //
                 // var w = (IFace) z;
                 // w.Kalua();
-            }
+                
+                
+            // }
         }
     }
 }

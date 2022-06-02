@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace NETMetaCoder
+namespace NETMetaCoder.Core
 {
     /// <summary>
     /// Extension methods for <see cref="string"/>, relevant to the requirements of this library.

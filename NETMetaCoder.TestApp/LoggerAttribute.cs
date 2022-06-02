@@ -13,7 +13,8 @@ namespace NETMetaCoder.TestApp
         {
             Console.WriteLine("in cache init");
 
-            var pt = wrappedMethodInfo.GetParameters().Aggregate("", (acc, t) => $"{acc}, {t.ParameterType.Name}");
+            var pt = string.Join(", ", wrappedMethodInfo.GetParameters().Select(p => p.ParameterType.Name));
+
             Console.WriteLine(
                 $"async={wrappedMethodInfo.IsAsync()}, returnType={wrappedMethodInfo.ReturnType.Name}, " +
                 $"methodName={wrappedMethodInfo.Name}, parameterTypes={pt}");
